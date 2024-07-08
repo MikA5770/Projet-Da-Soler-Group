@@ -1,0 +1,67 @@
+{
+  "navbar": {
+    "qsn": "Qui sommes-nous",
+    "actualite": "Actualité",
+    "recrutement": "Recrutement",
+    "menu":{
+      "connexion": "Connexion",
+      "deconnexion": "Déconnexion",
+      "moncompte": "Mon compte",
+      "administration": "Administration"
+    }
+  },
+  "footer": {
+    "accueil": "Accueil",
+    "contact": "Contact",
+    "mentions_legales": "Mentions légales",
+    "connexion": "Connexion",
+    "deconnexion": "Déconnexion",
+    "recrutement": "Recrutement",
+    "administration": "Administration",
+    "moncompte": "Mon compte",
+    "linkedin": "Retrouvez-nous sur"
+  },
+  "presentation": {
+    "titre": "Bien plus que du transport",
+    "slogan": "La souplesse d'une PME pour vous assurer satisfaction",
+    "titre_section": "Le groupe Da Soler",
+    "cardDS": {
+      "titre": "Da Soler",
+      "texte": "Le groupe a en premier lieu été fondé avec une entreprise de transport. Cette dernière, faisant partie du groupement Astre, est la composante principale de l'organisme. Au fil des années, le groupe a diversifié ses activités pour répondre aux besoins variés de ses clients. Aujourd'hui, Da Soler se distingue par son expertise et son engagement envers l'environnement dans le secteur du transport."
+    },
+    "cardDSL": {
+      "titre": "DSL",
+      "texte": "Divers Services Logistique élargit le champ d'action du groupe en rejoignant le secteur de la logistique et du stockage de machandises. Une multitude de dépôts se trouvent aux côtés de nos clients, garantissant une proximité et une réactivité optimale. Grâce aux outils modernes, DSL ne cesse de développer le groupe Da Soler tout en assurant la sécurité et l'hygiène de nos bâtiments."
+    },
+    "cardASPL": {
+      "titre": "ASPL",
+      "texte": "Notre flotte de véhicules étant conséquente, il est nécessaire de préserver leur maintien et leur bon fonctionnement afin de garantir disponibilité et la fiabilité de chaque véhicule. Nos équipes de maintenance travaillent sans relâche pour assurer une qualité de service efficace. Grâce à notre engagement, nous assurons la continuité de nos services et la satisfaction de nos clients."
+    },
+    "section_engagements": {
+      "titre": "Nos engagements",
+      "texte": "Confronté à de nombreux risques et impacts, nous sommes conscients des conséquences d'une mauvaise gestion. Afin d'éviter tout problème lié à l'hygiène, nous sommes engagés à respecter les normes d'hygiène et environnementales.",
+      "bouton": "Voir nos engagements"
+    },
+    "section_recrutement": {
+      "titre": "Recrutement",
+      "texte": "Notre organisme étant en constante expansion, nous avons fréquemment besoin de nouveaux talents. Le groupe Da Soler ne cesse d'évoluer grâce à nos équipes. Rejoignez-les !",
+      "bouton": "Voir nos offres d'emploi"
+    },
+    "section_contact": {
+      "contact": {
+        "titre": "Contact",
+        "adresse": "Adresse",
+        "numero": "Numéro"
+      },
+      "contactez_nous": {
+        "titre": "Contactez-nous",
+        "nom": "Nom",
+        "prenom": "Prénom",
+        "email": "Email",
+        "telephone": "Téléphone",
+        "message": "Message",
+        "envoyer": "Envoyer"
+      }
+    }
+  }
+}

@@ -1,0 +1,196 @@
+.header {
+  position: absolute;
+  z-index: 99;
+  width: 100%;
+}
+.container_video {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+
+  .myVideo {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: bottom;
+    z-index: -1;
+  }
+
+  .box_titre_engagements {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    display: flex;
+    width: 100%;
+    height: 25%;
+    justify-content: center;
+
+    .titre_engagements {
+      padding-left: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: left;
+      background-color: white;
+      width: 80%;
+      color: black;
+      font-size: 3.7rem;
+      font-weight: 500;
+    }
+  }
+}
+
+.container_infos_engagements {
+  padding-top: 70px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  .container_objectifCO2 {
+    display: flex;
+    justify-content: center;
+
+    .objectif_CO2 {
+      width: 70%;
+      .image_objectifCO2 {
+        img {
+          float: left;
+          margin: 0 20px 20px 0;
+          width: auto;
+          max-width: 50%;
+          height: auto;
+        }
+      }
+
+      .texte_objectifCO2 {
+        text-align: justify;
+        font-size: 1.3rem;
+        width: 100%;
+        ul {
+          list-style: none;
+          li {
+            margin: 30px 0;
+            span {
+              text-decoration: underline;
+              text-decoration-color: #fd4c00;
+            }
+            p {
+              margin: 20px;
+            }
+          }
+        }
+        p {
+          margin: 0;
+          font-size: 1.3rem;
+          .image_ds {
+            text-align: center;
+            img {
+              height: auto;
+              width: 80%;
+              background-color: rgb(28, 28, 28);
+              padding: 0 10%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .container_iso {
+    margin: 50px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .iso {
+      width: 70%;
+      display: flex;
+      .image_iso {
+        margin-right: 20px;
+        img {
+          width: 100%;
+          height: auto;
+          float: left;
+          margin: 0 20px 0 0;
+        }
+      }
+      .texte_iso {
+        font-size: 1.3rem;
+        text-align: justify;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .container_video {
+    .box_titre_engagements {
+      .titre_engagements {
+        font-size: 2.8rem;
+      }
+    }
+  }
+  .container_infos_engagements {
+    .container_objectifCO2 {
+      .objectif_CO2 {
+        width: 90%;
+      .texte_objectifCO2 {
+        font-size: 1.1rem;
+        ul {
+          padding: 0;
+        }
+        p {
+          margin: 0;
+          font-size: 1.1rem;
+          .image_ds {
+            text-align: center;
+            img {
+              height: auto;
+              width: 80%;
+              background-color: rgb(28, 28, 28);
+              padding: 0 10%;
+            }
+          }
+        }
+      }
+      }
+    }
+    .container_iso {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 50px;
+      .iso {
+        width: 90%;
+        flex-direction: column;
+        display: flex;
+        .image_iso {
+          display: flex;
+          justify-content: center;
+          margin-right: 20px;
+          margin: 20px 0;
+          img {
+            width: 60%;
+          }
+        }
+        .texte_iso {
+          font-size: 1.1rem;
+        }
+      }
+    }
+  }
+}

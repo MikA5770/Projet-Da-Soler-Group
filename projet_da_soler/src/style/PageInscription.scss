@@ -1,0 +1,69 @@
+.container_inscription {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  .container_form {
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    width: 60vw;
+    height: auto;
+    border-radius: 30px;
+    padding: 10px 30px;
+    display: flex;
+    flex-direction: column;
+    span {
+      font-size: 1.3rem;
+      color: black;
+    }
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      border: 2px solid white;
+      font-size: 1rem;
+      font-family: "Poppins", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+      outline: none;
+      transition: 0.3s ease-in;
+      border: none;
+      border-bottom: black 2px solid;
+      &:focus {
+        caret-color: #ff5722;
+        border-bottom: #ff5722 2px solid;
+      }
+    }
+    .button_inscription {
+      display: flex;
+      justify-content: center;
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 1.1rem;
+        width: 150px;
+        height: 45px;
+        border-radius: 5px;
+        box-shadow: 6px 6px 0 #ff56224e;
+        background-color: #ff5722;
+        transition: all 0.15s linear 0s;
+        cursor: pointer;
+        font-family: "Poppins", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        color: white;
+        border: none;
+      }
+      button:hover {
+        transform: translate(5px, 5px);
+        background-color: #bd2e02;
+        box-shadow: none;
+      }
+    }
+    .error_inscription {
+      margin: 20px;
+    }
+  }
+}

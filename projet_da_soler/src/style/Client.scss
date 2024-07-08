@@ -1,0 +1,50 @@
+.container_client:before {
+  left: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0), white);
+}
+
+.container_client:after {
+  right: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
+}
+.container_client:before,
+.container_client:after {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  content: "";
+  z-index: 2;
+}
+.container_client {
+  background-color: white;
+  position: relative;
+  .logo {
+    overflow: hidden;
+    padding: 60px 0;
+    white-space: nowrap;
+    background-color: white;
+    .logo-slide {
+      animation: 15s slide infinite linear;
+      display: inline-block;
+      @keyframes slide {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-100%);
+        }
+      }
+      img {
+        height: 90px;
+        margin: 0 40px;
+      }
+    }
+  }
+}
+.titre_client {
+  background-color: white;
+  text-align: center;
+  font-size: 2rem;
+  font-style: italic;
+}

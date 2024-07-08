@@ -1,0 +1,61 @@
+{
+  "navbar": {
+    "qsn": "About Us",
+    "engagements": "Our Commitments",
+    "recrutement": "Recruitment"
+  },
+  "footer": {
+    "accueil": "Home",
+    "contact": "Contact",
+    "mentions_legales": "Legal Notice",
+    "connexion": "Login",
+    "deconnexion": "Logout",
+    "recrutement": "Recruitment",
+    "administration": "Administration",
+    "moncompte": "My Account",
+    "linkedin": "Find us on"
+  },
+  "presentation": {
+    "titre": "More Than Just Transport",
+    "slogan": "The Flexibility of an SME to Ensure Your Satisfaction",
+    "titre_section": "Da Soler Group",
+    "cardDS": {
+      "titre": "Da Soler",
+      "texte": "The group was initially founded with a transport company. This company, part of the Astre group, is the main component of the organization. Over the years, the group has diversified its activities to meet the varied needs of its clients. Today, Da Soler stands out for its expertise and commitment to the environment in the transport sector."
+    },
+    "cardDSL": {
+      "titre": "DSL",
+      "texte": "Divers Services Logistique expands the group's scope by joining the logistics and warehousing sector. Numerous depots are located close to our clients, ensuring optimal proximity and responsiveness. Thanks to modern tools, DSL continues to develop the Da Soler group while ensuring the safety and hygiene of our buildings."
+    },
+    "cardASPL": {
+      "titre": "ASPL",
+      "texte": "With our large fleet of vehicles, it is necessary to maintain their upkeep and proper functioning to ensure availability and reliability of each vehicle. Our maintenance teams work tirelessly to ensure effective service quality. Thanks to our commitment, we ensure the continuity of our services and the satisfaction of our clients."
+    },
+    "section_engagements": {
+      "titre": "Our Commitments",
+      "texte": "Faced with numerous risks and impacts, we are aware of the consequences of poor management. To avoid any hygiene-related issues, we are committed to respecting hygiene and environmental standards.",
+      "bouton": "See Our Commitments"
+    },
+    "section_recrutement": {
+      "titre": "Recruitment",
+      "texte": "As our organization is constantly expanding, we frequently need new talents. The Da Soler group continuously evolves thanks to our teams. Join them!",
+      "bouton": "See Our Job Offers"
+    },
+    "section_contact": {
+      "contact": {
+        "titre": "Contact",
+        "adresse": "Address",
+        "numero": "Number"
+      },
+      "contactez_nous": {
+        "titre": "Contact Us",
+        "nom": "Name",
+        "prenom": "First Name",
+        "email": "Email",
+        "telephone": "Phone",
+        "message": "Message",
+        "envoyer": "Send"
+      }
+    }
+  }
+}

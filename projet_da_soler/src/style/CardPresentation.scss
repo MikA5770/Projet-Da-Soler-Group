@@ -1,0 +1,62 @@
+.container_presentation {
+  display: flex;
+  justify-content: center;
+  border-radius: 30px;
+  .presentation {
+    transition: 0.25s ease-out all;
+    border: 2px solid gray;
+    border-radius: 30px;
+    width: 28vw;
+    &:hover {
+      transform: translateY(-20px);
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px,
+        rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+    }
+
+    .pres_titre {
+      margin: 30px;
+      font-size: 2.2rem;
+      .underline {
+        width: 30%;
+        height: 8px;
+        background-color: #fd4c00;
+        border-radius: 5px;
+      }
+    }
+    .pres_contenu {
+      font-size: 1.1rem;
+      text-align: center;
+      margin: 20px;
+      line-height: 2.2rem;
+      text-align: justify;
+    }
+    .en_savoir_plus {
+      display: flex;
+      justify-content: center;
+      border-radius: 10px;
+      div {
+        cursor: pointer;
+        text-decoration: none;
+        color: black;
+        font-size: 1.3rem;
+        background-color: #fd4c00;
+        padding: 8px 15px;
+        margin-bottom: 20px;
+        transition: all 0.25s ease-out;
+        &:hover {
+          background-color: #002379;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .container_presentation {
+    margin-bottom: 30px;
+    .presentation {
+      width: 70vw;
+    }
+  }
+}

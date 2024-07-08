@@ -1,0 +1,234 @@
+.container_moncompte {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .mes_candidatures {
+    margin-top: 50px;
+    .titre_container_mescandidatures {
+      display: flex;
+      justify-content: space-around;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      align-items: center;
+      .colonne {
+        flex: 1;
+        text-align: center;
+      }
+    }
+    .container_mescandidatures {
+      display: flex;
+      justify-content: space-around;
+      font-size: 1.3rem;
+      border-bottom: 1px solid rgb(46, 46, 46);
+
+      .colonne_cand {
+        flex: 1;
+        text-align: center;
+        padding: 10px 0;
+      }
+      .link_mescandidatures {
+        color: black;
+      }
+    }
+  }
+  .titre_mesinfos {
+    font-size: 2rem;
+    margin-bottom: 40px;
+  }
+  .label_mesinfos {
+    text-decoration: underline;
+  }
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 2px solid white;
+    font-size: 1rem;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    outline: none;
+    transition: 0.3s ease-in;
+    border: none;
+    border-bottom: black 2px solid;
+    &:focus {
+      caret-color: #ff5722;
+      border-bottom: #ff5722 2px solid;
+    }
+  }
+  .mes_infos,
+  .mes_candidatures,
+  .email_mdp {
+    border: 1px solid black;
+    border-radius: 20px;
+    width: 70vw;
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    padding: 30px 30px;
+    margin-bottom: 40px;
+    .champs {
+      display: flex;
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      .error_mesinfos {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        color: red;
+      }
+      .left {
+        width: 50%;
+        margin-right: 30px;
+      }
+      .right {
+        width: 50%;
+      }
+    }
+    .div_modifier_mesinfos {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      .container_bouton_modifier {
+        height: 30px;
+      }
+    }
+  }
+  .email {
+    display: flex;
+    width: auto;
+    flex-direction: column;
+    .ant-btn {
+      align-self: flex-start;
+      margin: 20px 0;
+    }
+  }
+}
+
+.inputPsw {
+  width: 50%;
+}
+
+@media screen and (max-width: 500px) {
+  .container_moncompte {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .mes_candidatures {
+      margin-top: 50px;
+      .titre_container_mescandidatures {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        .colonne {
+          flex: 1;
+          text-align: center;
+        }
+      }
+      .container_mescandidatures {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        font-size: 1rem;
+        border-bottom: 1px solid rgb(46, 46, 46);
+
+        .colonne_cand {
+          flex: 1;
+          text-align: center;
+          padding: 10px 0;
+        }
+        .link_mescandidatures {
+          color: black;
+        }
+      }
+    }
+    .titre_mesinfos {
+      font-size: 1.6rem;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .label_mesinfos {
+      text-decoration: underline;
+    }
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 5px;
+      border: 2px solid white;
+      font-size: 1rem;
+      font-family: "Poppins", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+      outline: none;
+      transition: 0.3s ease-in;
+      border: none;
+      border-bottom: black 2px solid;
+      &:focus {
+        caret-color: #ff5722;
+        border-bottom: #ff5722 2px solid;
+      }
+    }
+    .mes_infos,
+    .mes_candidatures,
+    .email_mdp {
+      border: 1px solid black;
+      border-radius: 20px;
+      width: 70vw;
+      background-color: white;
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      padding: 30px;
+      margin-bottom: 40px;
+      .champs {
+        display: flex;
+        p {
+          margin: 0;
+          padding: 0;
+        }
+        .error_mesinfos {
+          height: 40px;
+          display: flex;
+          align-items: center;
+          color: red;
+        }
+        .left {
+          width: 50%;
+          margin-right: 30px;
+        }
+        .right {
+          width: 50%;
+        }
+      }
+      .div_modifier_mesinfos {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        .container_bouton_modifier {
+          height: 30px;
+        }
+        .ant-switch-inner{
+          width:100px;
+        }
+      }
+    }
+    .email {
+      display: flex;
+      width: auto;
+      flex-direction: column;
+      .ant-btn {
+        align-self: flex-start;
+        margin: 20px 0;
+      }
+    }
+  }
+
+  .inputPsw {
+    width: 50%;
+  }
+}

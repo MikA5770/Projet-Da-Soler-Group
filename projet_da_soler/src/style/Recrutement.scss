@@ -1,0 +1,202 @@
+.container {
+  margin: 50px 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .nb_poste {
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 50px;
+  }
+  .ligne {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(46, 46, 46);
+    padding: 20px;
+    width: 80vw;
+    height: auto;
+    .gauche {
+      height: 100%;
+      width: 50%;
+      .libelle {
+        font-size: 3rem;
+      }
+    }
+    .droite {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      width: 50%;
+      .infos {
+        display: flex;
+        justify-content: space-between;
+        width: 65%;
+        .type {
+          font-size: 1.8rem;
+        }
+        .lieu {
+          font-size: 1.8rem;
+        }
+      }
+
+      .voir_offre {
+        display: flex;
+        align-items: center;
+        border: black 2px solid;
+        border-radius: 30px;
+        padding: 5px;
+        cursor: pointer;
+        box-shadow: inset 0 0 0 0 #ed673e;
+        transition: ease 0.3s;
+        .plus {
+          font-size: 1.6rem;
+        }
+        .link_offre {
+          text-decoration: none;
+          color: black;
+        }
+      }
+      .voir_offre:hover {
+        box-shadow: inset 120px 0 0 0 #ed673e;
+      }
+
+      .voir_offre .plus {
+        transition: all 0.25s ease;
+        margin-right: 6px;
+        vertical-align: middle;
+      }
+
+      .voir_offre:hover .plus {
+        transform: rotate(90deg);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .container {
+    align-items: center;
+    .ligne {
+      .gauche {
+        .libelle {
+          font-size: 2.2rem;
+        }
+      }
+      .droite {
+        .infos {
+          .type {
+            font-size: 1.25rem;
+          }
+          .lieu {
+            font-size: 1.25rem;
+          }
+        }
+
+        .voir_offre {
+          padding: 3px 6px;
+          border: black 1px solid;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .container {
+    align-items: center;
+    .ligne {
+      width: 90%;
+      .gauche {
+        .libelle {
+          font-size: 1.9rem;
+        }
+      }
+      .droite {
+        .infos {
+          text-align: center;
+          align-items: center;
+          justify-content: center;
+          .type {
+            font-size: 1rem;
+            margin: 0 auto;
+          }
+          .lieu {
+            font-size: 1rem;
+            margin: 0 auto;
+          }
+        }
+
+        .voir_offre {
+          padding: 3px 4px;
+          border: black 1px solid;
+          display: flex;
+          align-items: center;
+          border-radius: 30px;
+          cursor: pointer;
+          box-shadow: inset 0 0 0 0 #ed673e;
+          transition: ease 0.3s;
+          .plus {
+            font-size: 1.4rem;
+          }
+          .link_offre {
+            font-size: 0.8rem;
+            text-decoration: none;
+            color: black;
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 600px) {
+  .container {
+    align-items: center;
+    .ligne {
+      width: 90%;
+      padding: 10px;
+      .gauche {
+        .libelle {
+          font-size: 1.3rem;
+        }
+      }
+      .droite {
+        .infos {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          .type {
+            font-size: 0.8rem;
+            margin: 0 auto;
+          }
+          .lieu {
+            font-size: 0.8rem;
+            margin: 0 auto;
+          }
+        }
+
+        .voir_offre {
+          padding: 2px 3px;
+          border: black 1px solid;
+          display: flex;
+          align-items: center;
+          border-radius: 30px;
+          cursor: pointer;
+          box-shadow: inset 0 0 0 0 #ed673e;
+          transition: ease 0.3s;
+          .plus {
+            font-size: 1.2rem;
+          }
+          .link_offre {
+            font-size: 0.7rem;
+            text-decoration: none;
+            color: black;
+          }
+        }
+      }
+    }
+  }
+}

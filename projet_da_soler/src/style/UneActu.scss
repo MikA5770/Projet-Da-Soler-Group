@@ -1,0 +1,24 @@
+.container_uneActu{
+    margin: 50px auto;
+    width: 70%;
+    div{
+        margin: 20px 0;
+    }
+    .titre_uneActu{
+        font-size: 3rem;
+        font-weight: 500;
+    }
+    .contenu_uneActu{
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    .image_uneActu{
+        width: 100%;
+        img{
+            width: 100%;
+            height: auto;
+            max-height: 350px;
+            object-fit: contain;
+        }
+    }
+}
