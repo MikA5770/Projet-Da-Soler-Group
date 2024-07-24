@@ -1,6 +1,6 @@
-import "../../style/Footer.scss"
-import DaSolerLogo from "../../../public/assets/DA-SOLER-Logo-Blanc-DgCs0BTA.png";
-import DslLogo from "../../../public/assets/d-Cdgkgmmn.png";
+import "../../style/Footer.scss";
+import DaSolerLogo from "../../../public/assets/DA-SOLER.png";
+import DslLogo from "../../../public/assets/dsl.png";
 import { UtilisateurConnexion } from "../../modele/DAO/UtilisateurConnexion";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
@@ -39,7 +39,6 @@ const Footer = () => {
           <Link to={"/"}>{t("footer.accueil")}</Link>
           <Link to="/#contact-section">{t("footer.contact")}</Link>
           <Link to={"/recrutement"}>{t("footer.recrutement")}</Link>
-          <Link to={"/"}>{t("footer.mentions_legales")}</Link>
           {user ? <Link to={"/moncompte"}>{t("footer.moncompte")}</Link> : ""}
           {user ? (
             <Links
@@ -67,10 +66,19 @@ const Footer = () => {
 
         <div className="infos">
           <div className="position">
-            <EnvironmentOutlined style={{fontSize:"32px"}} />
+            <EnvironmentOutlined style={{ fontSize: "32px" }} />
             <span>Rue Descartes, Techopole Forbach Sud, 57600 Folkling </span>
           </div>
 
+          <div className="mentions_politique">
+            <pre className="mentions_politique">
+              <a href={"/mentions-legales"}>{t("footer.mentions")}</a>{" "}
+              <span> - </span>
+              <a href={"/politique-de-confidentialite"}>
+                {t("footer.politique")}
+              </a>
+            </pre>
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { Carousel } from "antd";
-import "../../style/Carousel.scss"
+import "../../../style/Carousel.scss";
 
 function CarouselDSL({ images }: any) {
   return (

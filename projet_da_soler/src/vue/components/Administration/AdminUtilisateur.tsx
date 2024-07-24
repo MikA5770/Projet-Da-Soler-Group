@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { UtilisateurDAO } from "../../modele/DAO/UtilisateurDAO";
+import { UtilisateurDAO } from "../../../modele/DAO/UtilisateurDAO";
 import {
   Button,
   Empty,
@@ -7,6 +7,7 @@ import {
   InputRef,
   Modal,
   Space,
+  Spin,
   Table,
   TableColumnType,
   TableProps,
@@ -17,27 +18,47 @@ import {
   ExclamationCircleFilled,
   InfoCircleOutlined,
   SearchOutlined,
+  UserDeleteOutlined,
 } from "@ant-design/icons";
 import { FilterDropdownProps } from "antd/es/table/interface";
-import { Utilisateur } from "../../modele/class/Utilisateur";
+import { Utilisateur } from "../../../modele/class/Utilisateur";
+import { useCustomNav } from "../../../utils/useCustomNav";
 
 export const AdminUtilisateur = () => {
   const [users, setUsers] = useState<Utilisateur[]>([]);
   const userDAO = new UtilisateurDAO();
+  const { showSuccess, contextHolder } = useCustomNav();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       const info = await userDAO.getAll();
       setUsers(info);
+      setLoading(false);
     }
     fetchData();
   }, []);
 
   const { confirm } = Modal;
 
+  const updateUserRole = (id: string, isAdmin: boolean) => {
+    setUsers(
+      (prevUsers) =>
+        prevUsers.map((user) =>
+          user.id_user === id ? { ...user, estAdmin: isAdmin } : user
+        ) as Utilisateur[]
+    );
+  };
   const giveAdmin = (id: string) => {
     userDAO.toAdmin(id).then(() => {
-      handleDelete(id);
+      showSuccess("Le rôle d'administrateur a été attribué");
+      updateUserRole(id, true);
+    });
+  };
+  const removeAdmin = (id: string) => {
+    userDAO.removeAdmin(id).then(() => {
+      showSuccess("Le rôle d'administrateur a été retiré");
+      updateUserRole(id, false);
     });
   };
 
@@ -51,6 +72,19 @@ export const AdminUtilisateur = () => {
       cancelText: "Annuler",
       onOk() {
         giveAdmin(id);
+      },
+    });
+  };
+  const showRemove = (id: string) => {
+    confirm({
+      title:
+        "Etes-vous sûr de vouloir enlever les permissions d'administrateur à cet utilisateur ?",
+      icon: <ExclamationCircleFilled />,
+      okText: "Enlever",
+      okType: "danger",
+      cancelText: "Annuler",
+      onOk() {
+        removeAdmin(id);
       },
     });
   };
@@ -99,11 +133,6 @@ export const AdminUtilisateur = () => {
           })
         : "";
     }
-  };
-
-  const handleDelete = (id: React.Key) => {
-    const newData = users.filter((item: any) => item.id !== id);
-    setUsers(newData);
   };
 
   const getColumnSearchProps = (
@@ -235,19 +264,18 @@ export const AdminUtilisateur = () => {
         const user = users.find((user) => user.id_user === record.id_user);
 
         return (
-          <Space
-            size="middle"
-            style={{ fontSize: "1.3rem", cursor: "pointer" }}
-          >
+          <Space size="middle" style={{ fontSize: "1.5rem" }}>
+            <a>
+              <InfoCircleOutlined onClick={() => info(record.id_user)} />
+            </a>
             <a>
               {!user || user.estAdmin ? (
-                ""
+                <UserDeleteOutlined
+                  onClick={() => showRemove(record.id_user)}
+                />
               ) : (
                 <UserAddOutlined onClick={() => showConfirm(record.id_user)} />
               )}
-            </a>
-            <a>
-              <InfoCircleOutlined onClick={() => info(record.id_user)} />
             </a>
           </Space>
         );
@@ -267,8 +295,19 @@ export const AdminUtilisateur = () => {
     ),
   };
 
+  if (loading) {
+    return (
+      <div className="loading">
+        <Spin tip="Chargement" size="large">
+          <div></div>
+        </Spin>
+      </div>
+    );
+  }
+
   return (
     <div>
+      {contextHolder}
       <Table
         columns={columns}
         dataSource={users}

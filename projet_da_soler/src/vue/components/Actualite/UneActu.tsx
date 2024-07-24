@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { ActualiteDAO } from "../../modele/DAO/ActualiteDAO";
-import { Actualite } from "../../modele/class/Actualite";
-import "../../style/UneActu.scss";
+import { ActualiteDAO } from "../../../modele/DAO/ActualiteDAO";
+import { Actualite } from "../../../modele/class/Actualite";
+import "../../../style/UneActu.scss";
 import { useParams } from "react-router-dom";
-import NavBar from "./NavBar";
-import Footer from "./Footer";
+import NavBar from "../NavBar";
+import Footer from "../Footer";
 import { getDownloadURL, getStorage, listAll, ref } from "firebase/storage";
+import { Helmet } from "react-helmet";
 
 const UneActu = () => {
   const actuDAO = new ActualiteDAO();
@@ -28,7 +29,7 @@ const UneActu = () => {
       }
     };
 
-    getImage()
+    getImage();
   }, []);
 
   const getImageURLs = async (imagesRef: any) => {
@@ -69,16 +70,23 @@ const UneActu = () => {
   if (actu && id_actu)
     return (
       <>
+        <Helmet>
+          <title>{actu.titre}</title>
+        </Helmet>
+
         <NavBar />
         <div className="container_uneActu">
           <div className="titre_uneActu">{actu.titre}</div>
-          <div>{actu.datePublication}</div>
-          <div className="image_uneActu"><img src={imageURLs} alt="" /></div>
+          <div className="resume_uneActu">{actu.resume}</div>
+          <div className="date_uneActu">{actu.datePublication}</div>
+          <div className="image_uneActu">
+            <img src={imageURLs} alt="" />
+          </div>
           <div key={actu.id_actu} className="contenu_uneActu">
             <div dangerouslySetInnerHTML={{ __html: actu.contenu }}></div>
           </div>
         </div>
-          <Footer />
+        <Footer />
       </>
     );
 };

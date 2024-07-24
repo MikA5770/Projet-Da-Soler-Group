@@ -1,27 +1,28 @@
-import PageConnexion from "./vue/components/PageConnexion";
-import Recrutement from "./vue/components/Recrutement";
+import PageConnexion from "./vue/components/Connexion/PageConnexion";
+import Recrutement from "./vue/components/Recrutement/Recrutement";
 import "./i18n";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PageInscription from "./vue/components/PageInscription";
+import PageInscription from "./vue/components/Connexion/PageInscription";
 import Lenis from "lenis";
 import { useEffect } from "react";
-import UneCandidature from "./vue/components/UneCandidature";
+import UneCandidature from "./vue/components/Recrutement/UnPoste";
 import MonCompte from "./vue/components/MonCompte";
-import ForgotPassword from "./vue/components/ForgotPassword";
-import DepotDSL from "./vue/components/DepotDSL";
-import InfosEntreprise from "./vue/components/NosEngagements";
+import ForgotPassword from "./vue/components/Connexion/ForgotPassword";
+import DepotDSL from "./vue/components/InfosEntreprise/DepotDSL";
+import InfosEntreprise from "./vue/components/InfosEntreprise/NosEngagements";
 import { AuthProvider } from "./vue/components/AuthContext";
-import Administration from "./vue/components/Administration";
-import QuiSommesNous from "./vue/components/QuiSommesNous";
-import NosEngagements from "./vue/components/NosEngagements";
-import UneActu from "./vue/components/UneActu";
-import ActuEntreprise from "./vue/components/ActuEntreprise";
-import AdministrationActualite from "./vue/components/AdminActualite";
-import AjoutActu from "./vue/components/AjoutActu";
-import ModifActu from "./vue/components/ModifActu";
+import Administration from "./vue/components/Administration/Administration";
+import QuiSommesNous from "./vue/components/InfosEntreprise/QuiSommesNous";
+import NosEngagements from "./vue/components/InfosEntreprise/NosEngagements";
+import UneActu from "./vue/components/Actualite/UneActu";
+import ActuEntreprise from "./vue/components/Actualite/ActuEntreprise";
+import AjoutActu from "./vue/components/Administration/AjoutActu";
+import ModifActu from "./vue/components/Administration/ModifActu";
 import "./style/App.scss";
-import Presentation from "./vue/components/Presentation";
+import Accueil from "./vue/components/Accueil";
 import ScrollToTop from "./vue/components/ScrollToTop";
+import MentionsLegales from "./vue/components/InfosEntreprise/MentionsLegales";
+import PolitiqueConf from "./vue/components/InfosEntreprise/PolitiqueConf";
 
 function App() {
   useEffect(() => {
@@ -40,7 +41,7 @@ function App() {
       <BrowserRouter>
         <ScrollToTop>
           <Routes>
-            <Route path="/" element={<Presentation />} />
+            <Route path="/" element={<Accueil />} />
             <Route path="/connexion" element={<PageConnexion />} />
             <Route path="/inscription" element={<PageInscription />} />
             <Route path="/recrutement" element={<Recrutement />} />
@@ -54,8 +55,12 @@ function App() {
             <Route path="/nosengagements" element={<NosEngagements />} />
             <Route path="/actualite" element={<ActuEntreprise />} />
             <Route path="/actualite/:id_actu" element={<UneActu />} />
-            <Route path="/adminactu" element={<AdministrationActualite />} />
             <Route path="/actualite/ajout" element={<AjoutActu />} />
+            <Route path="/mentions-legales" element={<MentionsLegales />} />
+            <Route
+              path="/politique-de-confidentialite"
+              element={<PolitiqueConf />}
+            />
             <Route
               path="/actualite/modifier/:id_actu"
               element={<ModifActu />}

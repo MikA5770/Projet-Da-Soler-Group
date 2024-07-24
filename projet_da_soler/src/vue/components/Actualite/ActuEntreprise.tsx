@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Actualite } from "../../modele/class/Actualite";
-import { ActualiteDAO } from "../../modele/DAO/ActualiteDAO";
-import Footer from "./Footer";
-import NavBar from "./NavBar";
-import "../../style/ActuEntreprise.scss";
+import { Actualite } from "../../../modele/class/Actualite";
+import { ActualiteDAO } from "../../../modele/DAO/ActualiteDAO";
+import Footer from "../Footer";
+import NavBar from "../NavBar";
+import "../../../style/ActuEntreprise.scss";
 import { useNavigate } from "react-router-dom";
 import { getDownloadURL, getStorage, listAll, ref } from "firebase/storage";
+import { Helmet } from "react-helmet";
 
 const ActuEntreprise = () => {
   const actuDAO = new ActualiteDAO();
@@ -25,7 +26,7 @@ const ActuEntreprise = () => {
             const imageUrls = await getImageURLs(imagesRef);
             setImageURLs((prevURLs) => ({
               ...prevURLs,
-              [newsItem.id_actu]: imageUrls[0], 
+              [newsItem.id_actu]: imageUrls[0],
             }));
           } catch (error) {
             console.error(
@@ -50,6 +51,14 @@ const ActuEntreprise = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>Actualité</title>
+        <meta
+          name="keywords"
+          content="da soler, dsl, divers services logistiques, astre, logistique, transport"
+        />
+      </Helmet>
+
       <NavBar />
       <div className="container_article">
         <h2>Actualité</h2>

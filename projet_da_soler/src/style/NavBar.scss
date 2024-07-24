@@ -90,10 +90,12 @@ body {
         right: 13px;
         background-color: black;
         border-radius: 10px;
-        width: 12vw;
+        width: 1vw;
         min-width: 12vw;
         height: auto;
         padding: 20px 20px;
+        display: flex;
+        justify-content: center;
       }
       .menu::before {
         content: "";
@@ -111,23 +113,25 @@ body {
         cursor: pointer;
       }
       .menu ul li {
-        margin: 8px 0;
+        margin: 6px 0;
         position: relative;
+        display: inline-flex;
       }
       .menu ul li::after {
-        content: "";
-        position: absolute;
         bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
+        content: "";
+        display: block;
         height: 3px;
-        transform: scaleY(0);
-        background-color: white;
-        transition: transform 0.3s;
+        left: 50%;
+        position: absolute;
+        border-radius: 3px;
+        background: #fff;
+        transition: width 0.25s ease 0s, left 0.25s ease 0s;
+        width: 0;
       }
       .menu ul li:hover::after {
-        transform: scaleY(1);
+        width: 100%;
+        left: 0;
       }
       .menu.active {
         opacity: 1;
@@ -141,6 +145,9 @@ body {
         transform: translateY(-20px);
         transition: var(--speed) ease;
       }
+    }
+    .burger_menu {
+      display: none;
     }
   }
 }
@@ -257,7 +264,7 @@ body {
           min-width: 12vw;
           height: auto;
           padding: 10px 10px;
-          font-size: 1rem;
+          font-size: 1.1rem;
           flex-wrap: nowrap;
         }
       }
@@ -272,7 +279,6 @@ body {
     .navbar {
       width: 100%;
       height: 12vh;
-      background-color: $dark_b;
       display: flex;
       align-items: center;
       .left {
@@ -369,7 +375,7 @@ body {
           position: absolute;
           margin: 0;
           padding: 0;
-          top: 18vh;
+          top: 12vh;
           right: 13px;
           background-color: black;
           border-radius: 10px;
@@ -377,8 +383,15 @@ body {
           min-width: 12vw;
           height: auto;
           padding: 10px 10px;
-          font-size: 1rem;
+          font-size: 0.9rem;
           flex-wrap: nowrap;
+          ul {
+            li {
+              &::after {
+                height: 2px;
+              }
+            }
+          }
         }
       }
     }
@@ -412,17 +425,23 @@ body {
 
       .burger_menu {
         color: white;
-        background-color: rgba(0, 0, 0, 0.744);
+        background-color: rgba(27, 27, 27, 0.903);
         position: fixed;
         z-index: 99;
-        right: 0;
-        left: 0;
         top: 0;
-        height: 100vh;
+        left: 100%;
+        width: 100%;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        transition: left 0.3s ease-in-out;
+
+        &.open {
+          left: 0;
+
+        }
 
         .close_icon {
           position: absolute;
@@ -438,30 +457,61 @@ body {
           display: flex;
           flex-direction: column;
           align-items: center;
-          .test {
+          .liens_burger {
             cursor: pointer;
             position: relative;
             font-size: 1.7rem;
             display: inline-flex;
-            margin: 20px 0 ;
+            margin: 20px 0;
+            font-weight: 600;
+            opacity: 0; 
+            transform: translateY(-20px); 
+            animation: slideIn 0.4s forwards; 
+
+            &:nth-child(1) {
+              animation-delay: 0.1s;
+            }
+            &:nth-child(2) {
+              animation-delay: 0.2s;
+            }
+            &:nth-child(3) {
+              animation-delay: 0.3s;
+            }
+            &:nth-child(4) {
+              animation-delay: 0.4s;
+            }
+            &:nth-child(5) {
+              animation-delay: 0.5s;
+            }
+            &:nth-child(6) {
+              animation-delay: 0.6s;
+            }
+            &:nth-child(7) {
+              animation-delay: 0.7s;
+            }
+
             &::after {
               content: "";
               position: absolute;
-              border-radius: 3px;
-              width: 100%;
-              height: 3px;
               bottom: 0;
               left: 0;
+              width: 100%;
+              height: 0.1em;
               background-color: white;
-              transform: scaleX(0);
-              transform-origin: bottom right;
-              transition: transform 0.25s;
+              opacity: 0;
+              transition: opacity 300ms, transform 300ms;
             }
+
             &:hover::after {
-              transform-origin: bottom left;
-              transform: scaleX(1);
+              opacity: 1;
+              transform: translate3d(0, 0.2em, 0);
             }
           }
+          @keyframes slideIn {
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }}
         }
       }
     }

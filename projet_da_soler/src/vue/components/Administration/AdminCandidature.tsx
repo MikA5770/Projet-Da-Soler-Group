@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { CandidatureDAO } from "../../modele/DAO/CandidatureDAO";
+import { CandidatureDAO } from "../../../modele/DAO/CandidatureDAO";
 import {
   Button,
   Empty,
@@ -7,44 +7,40 @@ import {
   InputRef,
   Modal,
   Space,
+  Spin,
   Table,
   TableColumnType,
   TableProps,
 } from "antd";
 import { FilterDropdownProps } from "antd/es/table/interface";
 import {
+  DeleteOutlined,
   DownloadOutlined,
+  ExclamationCircleFilled,
   FileOutlined,
   InfoCircleOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
-import { UtilisateurDAO } from "../../modele/DAO/UtilisateurDAO";
-import { PosteDAO } from "../../modele/DAO/PosteDAO";
+import { UtilisateurDAO } from "../../../modele/DAO/UtilisateurDAO";
+import { useCustomNav } from "../../../utils/useCustomNav";
 
 const AdminCandidature = () => {
   const [loading, setLoading] = useState(true);
   const candidatureDAO = new CandidatureDAO();
-  const posteDAO = new PosteDAO();
   const utilisateurDAO = new UtilisateurDAO();
-  const [libellePoste, setLibellePoste] = useState<string[]>([]);
+  const [libPoste, setLibPoste] = useState<string[]>([])
 
   useEffect(() => {
     const fetchCandidatures = async () => {
       const lesCandidatures = await candidatureDAO.getAllCandidature();
       const infoCandidatures = await Promise.all(
         lesCandidatures.map(async (candidature) => {
-          const poste = await posteDAO.getById(candidature.id_poste);
-          setLibellePoste((prevLibellePoste) => [
-            ...prevLibellePoste,
-            poste.libelle,
-          ]);
           const utilisateur = await utilisateurDAO.getById(candidature.id_user);
           return {
             id_cand: candidature.id_cand,
             id_user: candidature.id_user,
-            id_poste: candidature.id_poste,
-            libelle_poste: poste.libelle,
+            libelle_poste: candidature.libellePoste,
             nomComplet: utilisateur.nom + " " + utilisateur.prenom,
             telephone: utilisateur.telephone,
             email: utilisateur.email,
@@ -56,8 +52,34 @@ const AdminCandidature = () => {
       setDataCandidature(infoCandidatures);
       setLoading(false);
     };
+
+    const fetchAllLibPoste = async () => {
+      const libelles = await candidatureDAO.getAllLibPoste()
+      setLibPoste(libelles)
+    }
+    fetchAllLibPoste()
     fetchCandidatures();
   }, []);
+
+  const refreshDelete = (id: React.Key) => {
+    const newData = dataCandidatures.filter((item: any) => item.id_cand !== id);
+    setDataCandidature(newData);
+  };
+
+  const { showSuccess, contextHolder } = useCustomNav();
+
+  const supprimer = async (candId: string) => {
+    try {
+      await candidatureDAO.supp(candId);
+      showSuccess("Candidature supprimée avec succès !");
+      refreshDelete(candId);
+    } catch (error) {
+      console.error(
+        "Erreur lors de la suppression de la candidature : ",
+        error
+      );
+    }
+  };
 
   const getFiles = async (id_cand: string) => {
     const files = await candidatureDAO.getFichiersByIdCandidature(id_cand);
@@ -174,7 +196,7 @@ const AdminCandidature = () => {
       title: "Nom du poste",
       dataIndex: "libelle_poste",
       key: "libelle_poste",
-      filters: libellePoste.map((poste) => {
+      filters: libPoste.map((poste) => {
         return { text: poste, value: poste };
       }),
       onFilter: (value, record) =>
@@ -192,7 +214,7 @@ const AdminCandidature = () => {
       dataIndex: "dateCandidature",
       key: "dateCandidature",
       ...getColumnSearchProps("dateCandidature", "date"),
-      responsive:["md"]
+      responsive: ["md"],
     },
     {
       title: "Action",
@@ -200,10 +222,7 @@ const AdminCandidature = () => {
       key: "action",
       render: (_, record) => (
         <div>
-          <Space
-            size="middle"
-            style={{ fontSize: "1.3rem", cursor: "pointer" }}
-          >
+          <Space size="middle" style={{ fontSize: "1.5rem" }}>
             <a>
               <InfoCircleOutlined
                 onClick={() => infoCandidature(record.id_cand)}
@@ -212,11 +231,28 @@ const AdminCandidature = () => {
             <a>
               <FileOutlined onClick={() => files(record.id_cand)} />
             </a>
+            <a>
+              <DeleteOutlined onClick={() => handleDelete(record.id_cand)} />
+            </a>
           </Space>
         </div>
       ),
     },
   ];
+  const { confirm } = Modal;
+
+  const handleDelete = (idCand: string) => {
+    confirm({
+      title: "Etes-vous sûr de supprimer la candidature ?",
+      icon: <ExclamationCircleFilled />,
+      okText: "Supprimer",
+      okType: "danger",
+      cancelText: "Annuler",
+      onOk() {
+        supprimer(idCand);
+      },
+    });
+  };
 
   const files = (id_cand: string) => {
     const candidatureSelected = dataCandidatures.find(
@@ -493,7 +529,6 @@ const AdminCandidature = () => {
 
   interface DataCand {
     id_cand: string;
-    id_poste: string;
     id_user: string;
     libelle_poste: string;
     nomComplet: string;
@@ -504,11 +539,18 @@ const AdminCandidature = () => {
   }
 
   if (loading) {
-    return <div>CHARGEMENT</div>;
+    return (
+      <div className="loading">
+        <Spin tip="Chargement" size="large">
+          <div></div>
+        </Spin>
+      </div>
+    );
   }
 
   return (
     <>
+      {contextHolder}
       <div>
         <Table
           columns={columns}

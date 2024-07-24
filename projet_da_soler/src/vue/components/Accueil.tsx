@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import "../../style/Presentation.scss";
-import da_soler from "../../../public/assets/DA-SOLER-Logo-Blanc-DgCs0BTA.png";
+import { Helmet } from "react-helmet";
+import "../../style/Accueil.scss";
+import da_soler from "../../../public/assets/DA-SOLER.png";
 import CardPresentation, { CardPres } from "./CardPresentation";
 import emailjs from "@emailjs/browser";
-import camion from "../../../public/assets/IMG_2416-BrIEPFrD.jpg";
-import camion2 from "../../../public/assets/IMG_2535-CriUlLHM.jpg";
+import camion from "../../../public/assets/c.jpg";
+import camion2 from "../../../public/assets/IMG_2535.jpg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { LinkedinFilled } from "@ant-design/icons";
@@ -15,15 +16,20 @@ import {
   checkPrenom,
   checkTelephone,
   checkEmail,
+  checkMessage,
+  checkBox,
 } from "../../utils/validation";
 import { useCustomNav } from "../../utils/useCustomNav";
 import { ErrorsState } from "../../utils/ErrorsState";
+import { Checkbox } from "antd";
+import video from "../../../public/vid/accueil_background.mov";
 
-function Presentation() {
+function Accueil() {
+  const [checkbox, setCheckBox] = useState(false);
+
   const location = useLocation();
   const { t } = useTranslation();
-  const { showError, contextHolder, showSuccess } =
-    useCustomNav();
+  const { showError, contextHolder, showSuccess } = useCustomNav();
 
   useEffect(() => {
     if (location.hash) {
@@ -57,9 +63,8 @@ function Presentation() {
   const [prenom, setPrenom] = useState("");
   const [telephone, setTelephone] = useState("");
   const [messageEmail, setMessageEmail] = useState("");
-  
-  const [errors, setErrors] = useState<ErrorsState>();
 
+  const [errors, setErrors] = useState<ErrorsState>();
   const success = () => {
     showSuccess("Email envoyé avec succès !");
   };
@@ -68,13 +73,12 @@ function Presentation() {
   };
 
   const form: any = useRef();
-
   const sendEmail = (e: any) => {
     e.preventDefault();
 
     emailjs
-      .sendForm("service_54tfrob", "template_qafuleo", form.current, {
-        publicKey: "qCVbsadd1jOLZpZTC",
+      .sendForm("service_nl3qup7", "template_jp63tlk", form.current, {
+        publicKey: "LZFjiKj9vUf7xiK-q",
       })
       .then(
         () => {
@@ -90,7 +94,8 @@ function Presentation() {
     const telephoneError = checkTelephone(telephone);
     const nomError = checkNom(nom);
     const prenomError = checkPrenom(prenom);
-    const messageEmailError = checkPrenom(messageEmail);
+    const messageEmailError = checkMessage(messageEmail);
+    const checkBoxError = checkBox(checkbox);
 
     setErrors({
       email: emailError,
@@ -98,33 +103,64 @@ function Presentation() {
       nom: nomError,
       prenom: prenomError,
       messageEmail: messageEmailError,
+      checkBox: checkBoxError,
     });
+
+    return (
+      emailError ||
+      telephoneError ||
+      nomError ||
+      prenomError ||
+      messageEmailError ||
+      checkBoxError
+    );
   };
 
-  const checkForm = async (e: any) => {
+  const checkForm = (e: any) => {
     e.preventDefault();
-    displayErrors();
+
+    const hasErrors = displayErrors();
+
     if (
-      !errors?.email &&
-      !errors?.telephone &&
-      !errors?.nom &&
-      !errors?.prenom &&
-      !errors?.messageEmail
+      hasErrors ||
+      !email ||
+      !nom ||
+      !prenom ||
+      !telephone ||
+      !messageEmail ||
+      !checkbox
     ) {
-      sendEmail(e);
-    } else {
-      console.log("passe pas");
+      return;
     }
+
+    sendEmail(e);
   };
 
   const nav = useNavigate();
 
   return (
     <>
-      <NavBar />
+      <Helmet>
+        <title>Groupe Da Soler</title>
+        <meta
+          name="description"
+          content="Le groupe Da Soler est composé de plusieurs sociétés, exerçant notamment dans le secteur du transport et de la logistique."
+        />
+        <meta
+          name="keywords"
+          content="da soler, dsl, divers services logistiques, astre, transport, logistique"
+        />
+      </Helmet>
+      <div className="header">
+        <NavBar />
+      </div>
       {contextHolder}
       <div className="img_camion">
-        <div className="imgFondContainer"></div>
+        <div className="imgFondContainer">
+          <video playsInline autoPlay muted loop className="vid_accueil">
+            <source src={video} type="video/mp4" />
+          </video>
+        </div>
 
         <div className="image_da_soler">
           <img src={da_soler} alt="Image Da Soler" />
@@ -287,6 +323,23 @@ function Presentation() {
               <div className="error_contact">{errors?.messageEmail}</div>
             </div>
 
+            <div className="input_contact">
+              <Checkbox onChange={() => setCheckBox(!checkbox)}>
+                <div className="politique">
+                  {t("presentation.accepte")}{" "}
+                  <span
+                    className="politique"
+                    style={{ textDecoration: "underline" }}
+                    onClick={() => nav("politique-de-confidentialite")}
+                  >
+                    {t("footer.politique")}
+                  </span>
+                  .
+                </div>
+              </Checkbox>
+              <div className="error_contact">{errors?.checkBox}</div>
+            </div>
+
             <button type="submit" value="Send" className="button_contact">
               <span>
                 {t("presentation.section_contact.contactez_nous.envoyer")}
@@ -313,4 +366,4 @@ function Presentation() {
   );
 }
 
-export default Presentation;
+export default Accueil;

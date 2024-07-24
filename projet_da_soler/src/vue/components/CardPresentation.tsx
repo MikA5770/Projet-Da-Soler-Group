@@ -6,6 +6,7 @@ import {
   TruckOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export interface CardPres {
   titre: string;
@@ -16,6 +17,8 @@ export interface CardPres {
 
 const CardPresentation = (infos: CardPres) => {
   const nav = useNavigate();
+    const { t } = useTranslation();
+
   const [logo, setLogo] = useState<JSX.Element | null>(null);
 
   useEffect(() => {
@@ -44,7 +47,7 @@ const CardPresentation = (infos: CardPres) => {
           </div>
           <div className="pres_contenu"> {infos.contenu}</div>
           <div onClick={() => nav("/quisommesnous")} className="en_savoir_plus">
-            <div>En savoir plus</div>
+            <div>{t("card")}</div>
           </div>
         </div>
       </div>

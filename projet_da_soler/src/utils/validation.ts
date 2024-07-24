@@ -41,7 +41,8 @@ export const checkPasswordIssues = (password: string): string[] => {
   if (!password.match(/(?=.{8,})/)) {
     problems.push("Le mot de passe doit faire 8 caractères minimum");
   }
-return problems};
+  return problems;
+};
 
 export const checkPasswordsMatch = (
   originalPassword: string,
@@ -67,7 +68,7 @@ export const checkNom = (nom: string): string => {
     nom.trim().length > 30 ||
     !regex.test(nom.trim())
   ) {
-    return "Le champ doit contenir entre 2 et 30 lettres";
+    return "Le champ doit contenir au moins 2 lettres";
   } else {
     return "";
   }
@@ -80,7 +81,7 @@ export const checkPrenom = (prenom: string): string => {
     prenom.trim().length > 30 ||
     !regex.test(prenom.trim())
   ) {
-    return "Le champ doit contenir entre 2 et 30 lettres";
+    return "Le champ doit contenir au moins 2 lettres";
   } else {
   }
   return "";
@@ -91,4 +92,9 @@ export const checkMessage = (message: string): string => {
     return "Le message ne peut pas être vide";
   }
   return "";
+};
+
+export const checkBox = (box:boolean): string => {
+  if (box === false) return "Veuillez cocher la case afin de continuer";
+  else return "";
 };

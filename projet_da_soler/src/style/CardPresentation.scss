@@ -60,3 +60,42 @@
     }
   }
 }
+@media screen and (max-width: 600px) {
+  .container_presentation {
+    margin-bottom: 30px;
+
+    .presentation {
+      width: 90vw;
+      .pres_titre {
+        margin: 30px;
+        font-size: 1.7rem;
+      }
+      .pres_contenu {
+        font-size: 1rem;
+        text-align: center;
+        margin: 20px;
+        line-height: 1.9rem;
+        text-align: justify;
+      }
+      .en_savoir_plus {
+        display: flex;
+        justify-content: center;
+        border-radius: 10px;
+        div {
+          cursor: pointer;
+          text-decoration: none;
+          color: black;
+          font-size: 1rem;
+          background-color: #fd4c00;
+          padding: 8px 15px;
+          margin-bottom: 20px;
+          transition: all 0.25s ease-out;
+          &:hover {
+            background-color: #002379;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}

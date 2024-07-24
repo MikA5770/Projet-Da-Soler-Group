@@ -1,17 +1,17 @@
 export class Candidature {
   private _id_cand: string;
-  private _id_poste: string;
+  private _libellePoste: string;
   private _id_user: string;
   private _dateCandidature: string;
 
   constructor(
-    id_poste: string,
+    libellePoste: string,
     id_user: string,
     dateCandidature: string = "",
     id_cand: string = ""
   ) {
     this._id_cand = id_cand;
-    this._id_poste = id_poste;
+    this._libellePoste = libellePoste;
     this._id_user = id_user;
     this._dateCandidature = dateCandidature;
   }
@@ -22,11 +22,11 @@ export class Candidature {
   set id_cand(id_cand: string) {
     this._id_cand = id_cand;
   }
-  get id_poste(): string {
-    return this._id_poste;
+  get libellePoste(): string {
+    return this._libellePoste;
   }
-  set id_poste(id_poste: string) {
-    this._id_poste = id_poste;
+  set libellePoste(libellePoste: string) {
+    this._libellePoste = libellePoste;
   }
 
   get id_user(): string {

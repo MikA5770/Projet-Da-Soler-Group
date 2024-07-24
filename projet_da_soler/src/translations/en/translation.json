@@ -1,8 +1,15 @@
 {
   "navbar": {
-    "qsn": "About Us",
-    "engagements": "Our Commitments",
-    "recrutement": "Recruitment"
+    "qsn": "Who we are",
+    "actualite": "News",
+    "recrutement": "Recruitment",
+    "bjr": "Hello",
+    "menu": {
+      "connexion": "Login",
+      "deconnexion": "Logout",
+      "moncompte": "My account",
+      "administration": "Administration"
+    }
   },
   "footer": {
     "accueil": "Home",
@@ -10,36 +17,41 @@
     "mentions_legales": "Legal Notice",
     "connexion": "Login",
     "deconnexion": "Logout",
+    "qsn": "Who we are",
     "recrutement": "Recruitment",
+    "actualite": "News",
     "administration": "Administration",
-    "moncompte": "My Account",
+    "moncompte": "My account",
+    "mentions": "Legal Notice",
+    "politique": "Privacy Policy",
     "linkedin": "Find us on"
   },
   "presentation": {
-    "titre": "More Than Just Transport",
-    "slogan": "The Flexibility of an SME to Ensure Your Satisfaction",
+    "titre": "Much more than transport",
+    "slogan": "The flexibility of an SME to ensure your satisfaction",
     "titre_section": "Da Soler Group",
+    "accepte": "I have read and accept the ",
     "cardDS": {
       "titre": "Da Soler",
-      "texte": "The group was initially founded with a transport company. This company, part of the Astre group, is the main component of the organization. Over the years, the group has diversified its activities to meet the varied needs of its clients. Today, Da Soler stands out for its expertise and commitment to the environment in the transport sector."
+      "texte": "The group was first founded with a transport company. This company, part of the Astre group, is the main component of the organization. Over the years, the group has diversified its activities to meet the varied needs of its clients. Today, Da Soler stands out for its expertise and commitment to the environment in the transport sector."
     },
     "cardDSL": {
       "titre": "DSL",
-      "texte": "Divers Services Logistique expands the group's scope by joining the logistics and warehousing sector. Numerous depots are located close to our clients, ensuring optimal proximity and responsiveness. Thanks to modern tools, DSL continues to develop the Da Soler group while ensuring the safety and hygiene of our buildings."
+      "texte": "Divers Services Logistique expands the group's field of action by joining the logistics and warehousing sector. Numerous depots are located near our clients, ensuring optimal proximity and responsiveness. Thanks to modern tools, DSL continues to develop the Da Soler group while ensuring the safety and hygiene of our buildings."
     },
     "cardASPL": {
       "titre": "ASPL",
-      "texte": "With our large fleet of vehicles, it is necessary to maintain their upkeep and proper functioning to ensure availability and reliability of each vehicle. Our maintenance teams work tirelessly to ensure effective service quality. Thanks to our commitment, we ensure the continuity of our services and the satisfaction of our clients."
+      "texte": "With our large fleet of vehicles, it is necessary to maintain and ensure their proper functioning to guarantee the availability and reliability of each vehicle. Our maintenance teams work tirelessly to ensure effective service quality. Through our commitment, we ensure the continuity of our services and the satisfaction of our clients."
     },
     "section_engagements": {
-      "titre": "Our Commitments",
-      "texte": "Faced with numerous risks and impacts, we are aware of the consequences of poor management. To avoid any hygiene-related issues, we are committed to respecting hygiene and environmental standards.",
-      "bouton": "See Our Commitments"
+      "titre": "Our commitments",
+      "texte": "Aware of the many risks and impacts in the field of transport and logistics, we are committed to strictly adhering to hygiene and environmental standards to ensure responsible and efficient management.",
+      "bouton": "See our commitments"
     },
     "section_recrutement": {
       "titre": "Recruitment",
-      "texte": "As our organization is constantly expanding, we frequently need new talents. The Da Soler group continuously evolves thanks to our teams. Join them!",
-      "bouton": "See Our Job Offers"
+      "texte": "Our organization is constantly expanding, and we frequently need new talents. The Da Soler group continues to evolve thanks to our teams. Join them!",
+      "bouton": "See our job offers"
     },
     "section_contact": {
       "contact": {
@@ -48,14 +60,52 @@
         "numero": "Number"
       },
       "contactez_nous": {
-        "titre": "Contact Us",
+        "titre": "Contact us",
         "nom": "Name",
-        "prenom": "First Name",
+        "prenom": "First name",
         "email": "Email",
         "telephone": "Phone",
         "message": "Message",
         "envoyer": "Send"
       }
     }
-  }
+  },
+  "qsn": {
+    "titre": "Who we are ?",
+    "container_infos1": {
+      "premiere": "The Da Soler group was founded in 1975. For over 40 years, our company has excelled in its various functions, including transport and logistics. Our geographical advantage allows us to be as close to our clients as to most of Europe.",
+      "deuxieme": "Da Soler handles transport at regional, national, and international levels. It operates in many countries such as Germany, Belgium, Luxembourg, Switzerland, Spain, Portugal, Italy, and the Netherlands.",
+      "bouton": "Discover our commitments"
+    },
+    "container_infos2": {
+      "premiere": "Divers Services Logistique is our sector specialized in logistics and storage. Our numerous depots allow us to expand over a wide area and store more goods while respecting our values and commitments.",
+      "deuxieme": "We store 2 types of products: finished and semi-finished products. The shipment of goods varies depending on their type. Semi-finished products, such as empty cases and caps, are first stored in depots before being sent to our clients.",
+      "bouton": "Discover our depots"
+    },
+    "container_infos3": "We are proud to be part of the Association of European Transporters (ASTRE), bringing together many SMEs specializing in logistics and goods transport like Da Soler."
+  },
+  "nos_eng": {
+    "titre": "Our Commitments",
+    "txt1": "The Da Soler group is committed to improving its environmental performance. This is reflected in our participation in the Objective CO₂ initiative. Indeed, one of the major challenges in the road transport sector concerns the environmental impact.",
+    "txt2": "Aware of the environmental risks, our company is determined to optimize its energy efficiency. This commitment is defined by numerous actions and measures put in place to meet the expectations of an energy transition:",
+    "1": {
+      "titre": "- Decarbonizing our vehicle fleet:",
+      "txt": "The Objective CO₂ program provides a variety of technical means to monitor our CO₂ emissions evaluation, potential CO₂ savings, and the progress of our goals."
+    },
+    "2": {
+      "titre": "- Eco-responsible driving by drivers:",
+      "txt": "It is essential to have drivers aware of the risks and consequences of their driving behavior. To address this need, training sessions are implemented for our drivers, and we take necessary steps to minimize the driving of empty vehicles."
+    },
+    "3": {
+      "titre": "- CO₂ diagnostics aimed at reducing our environmental impact:",
+      "txt": "CO₂ diagnostics are conducted to assess the greenhouse gas emissions emitted by the vehicle fleet. This will then allow us to define a customized action plan to reduce emissions."
+    },
+    "4": {
+      "titre": "- Use of alternative fuels:",
+      "txt": "In addition to replacing our oldest vehicles with new ones, the use of B100 fuel is necessary to achieve our goals. Our fleet already consists of 10 vehicles running on this fuel, and 10 more are planned by 2025."
+    },
+    "fin": "On the one hand, these steps allow us, and have already allowed us, to reduce our greenhouse gas emissions. On the other hand, the goal is to obtain the Objective CO₂ charter and be certified as an 'Eco-responsible transporter'.",
+    "iso": "One of our major goals is quality. The Da Soler company holds the ISO 9001 quality management standard. We guarantee to consistently provide the quality services and solutions we offer, whether in transport or logistics."
+  },
+  "card": "Learn more"
 }

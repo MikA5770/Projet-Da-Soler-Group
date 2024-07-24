@@ -6,5 +6,6 @@ export interface ErrorsState {
   nom?: string;
   prenom?: string;
   age?: string;
-  messageEmail?:string ;
+  messageEmail?: string;
+  checkBox?: string;
 }

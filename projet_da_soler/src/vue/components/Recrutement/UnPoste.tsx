@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { PosteDAO } from "../../modele/DAO/PosteDAO";
-import { Poste } from "../../modele/class/Poste";
-import { Candidature } from "../../modele/class/Candidature";
-import { CandidatureDAO } from "../../modele/DAO/CandidatureDAO";
-import "../../style/UneCandidature.scss";
-import NavBar from "./NavBar";
-import Footer from "./Footer";
-import { useAuth } from "./AuthContext";
+import { PosteDAO } from "../../../modele/DAO/PosteDAO";
+import { Poste } from "../../../modele/class/Poste";
+import { Candidature } from "../../../modele/class/Candidature";
+import { CandidatureDAO } from "../../../modele/DAO/CandidatureDAO";
+import "../../../style/UnPoste.scss";
+import NavBar from "../NavBar";
+import Footer from "../Footer";
+import { useAuth } from "../AuthContext";
+import { Helmet } from "react-helmet";
+import { Checkbox } from "antd";
+import { useCustomNav } from "../../../utils/useCustomNav";
 
-function UneCandidature() {
+function UnPoste() {
   const { id } = useParams();
 
   const nav = useNavigate();
+
+  const { showMessageAndRedirect, contextHolder } = useCustomNav();
 
   const posteDAO = new PosteDAO();
   const candidatureDAO = new CandidatureDAO();
@@ -20,9 +25,11 @@ function UneCandidature() {
   const [exist, setExist] = useState<boolean | null>(null);
   const [data, setData] = useState<Poste>();
   const [cv, setCv] = useState<File | null>(null);
+  const [checkbox, setCheckbox] = useState(false);
   const [error, setError] = useState(false);
   const [errorSize, setErrorSize] = useState(false);
   const [errorType, setErrorType] = useState(false);
+  const [errorCheckbox, setErrorCheckbox] = useState(false);
   const [lettre, setLettre] = useState<File | null>(null);
 
   const { currentUser } = useAuth();
@@ -46,8 +53,11 @@ function UneCandidature() {
     fetchPoste();
   }, []);
 
+  const [disabled, setDisabled] = useState(false);
+
   async function handleAdd(id_poste: string, id_user: string) {
     const candidature = new Candidature(id_poste, id_user);
+    setErrorCheckbox(false);
     setError(false);
     setErrorSize(false);
     setErrorType(false);
@@ -59,11 +69,19 @@ function UneCandidature() {
       (lettre.type !== "application/pdf" && lettre.type !== "image/jpeg")
     )
       setErrorType(true);
+    else if (!checkbox) setErrorCheckbox(true);
     else {
       try {
+        setDisabled(true);
         const docId = await candidatureDAO.add(candidature);
         await candidatureDAO.addInStorage(cv, lettre, docId);
-        nav("/recrutement");
+        showMessageAndRedirect(
+          "success",
+          "Votre candidature a été envoyée",
+          "Votre candidature a été envoyée",
+          2,
+          "/recrutement"
+        );
       } catch (error) {
         console.error(
           "Erreur lors de l'ajout de la candidature et du fichier :",
@@ -83,6 +101,11 @@ function UneCandidature() {
   if (data && id)
     return (
       <>
+        {contextHolder}
+        <Helmet>
+          <title>Poste - {data.libelle}</title>
+        </Helmet>
+
         <NavBar />
         <div className="container_uneCandidature">
           <div className="info_uneCandidature">
@@ -137,16 +160,31 @@ function UneCandidature() {
                     <span>{lettre?.name}</span>
                   </div>
 
+                  <div className="politique_conf">
+                    <Checkbox onChange={() => setCheckbox(!checkbox)}>
+                      <div className="politique">
+                        J'ai lu et j'accepte la{" "}
+                        <span
+                          className="politique"
+                          style={{ textDecoration: "underline" }}
+                          onClick={() => nav("politique-de-confidentialite")}
+                        >
+                          Politique de confidentialité
+                        </span>
+                        .
+                      </div>
+                    </Checkbox>
+                  </div>
+
                   <div
                     className="container_message"
                     style={{ margin: "40px 0" }}
                   >
-                    {/* <div className="titre_postulation">Message (optionnel)</div>
-                    <textarea></textarea> <br /> */}
                     <button
+                      disabled={disabled}
                       type="submit"
                       className="bouton_postuler"
-                      onClick={() => handleAdd(id, currentUser.uid)}
+                      onClick={() => handleAdd(data.libelle, currentUser.uid)}
                     >
                       Envoyer sa candidature
                     </button>
@@ -169,10 +207,15 @@ function UneCandidature() {
                     ) : (
                       ""
                     )}
+                    {errorCheckbox ? (
+                      <div>Veuillez cocher la case afin de continuer</div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </section>
               ) : (
-                <div>Vous devez être connecté</div>
+                <div className="needConnexion">Vous devez être connecté</div>
               )}
             </div>
           </div>
@@ -182,4 +225,4 @@ function UneCandidature() {
     );
 }
 
-export default UneCandidature;
+export default UnPoste;

@@ -12,8 +12,6 @@ import {
 import { Button, Input, Modal, Switch } from "antd";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { CandidatureDAO } from "../../modele/DAO/CandidatureDAO";
-import { PosteDAO } from "../../modele/DAO/PosteDAO";
-import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import { useAuth } from "./AuthContext";
@@ -28,6 +26,7 @@ import {
   checkTelephone,
 } from "../../utils/validation";
 import { ErrorsState } from "../../utils/ErrorsState";
+import { Helmet } from "react-helmet";
 
 function MonCompte() {
   const [errors, setErrors] = useState<ErrorsState>();
@@ -129,6 +128,7 @@ function MonCompte() {
                   showMessageAndRedirect(
                     "success",
                     "Mot de passe modifié, veuillez vous reconnecter",
+                    "Mot de passe modifié, veuillez vous reconnecterf",
                     0.1,
                     "/connexion"
                   );
@@ -163,8 +163,13 @@ function MonCompte() {
     if (currentUser && currentUser.email) {
       if (checkEmail(newEmail)) {
         showError("Format de l'e-mail invalide");
+        setConfirmLoading(false);
+      } else if (psw.length === 0) {
+        showError("Mot de passe vide");
+        setConfirmLoading(false);
       } else if (await userDAO.checkEmailExists(newEmail)) {
         showError("Un compte est déjà assigné à cet e-mail");
+        setConfirmLoading(false);
       } else {
         const credentials = EmailAuthProvider.credential(
           currentUser.email,
@@ -178,7 +183,8 @@ function MonCompte() {
                 setConfirmLoading(false);
                 showMessageAndRedirect(
                   "success",
-                  "E-mail de confirmation envoyé",
+                  "E-mail de confirmation envoyé. Veuillez vérifier vos spams.",
+                  "E-mail de confirmation envoyé. Veuillez vérifier vos spams.",
                   0.1,
                   "/"
                 );
@@ -218,15 +224,16 @@ function MonCompte() {
       prenom: prenomError,
       age: ageError,
     });
+
+    return telephoneError || nomError || prenomError || ageError;
   };
 
   const checkForm = async () => {
     if (currentUser) {
-      displayErrors();
-      if (
-        !errors ||
-        (!errors.telephone && !errors.nom && !errors.prenom && !errors.age)
-      ) {
+      const hasErrors = displayErrors();
+      if (hasErrors) {
+        return;
+      } else {
         handleEdit(currentUser.uid);
       }
     }
@@ -283,64 +290,55 @@ function MonCompte() {
     setPsw("");
   };
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
     setConfirmLoading(true);
+
     if (currentUser && currentUser.email) {
       if (psw.length < 7) {
         setConfirmLoading(false);
         showError("Mot de passe incorrect");
-      } else {
-        const credentials = EmailAuthProvider.credential(
-          currentUser.email,
-          psw
-        );
-        reauthenticateWithCredential(currentUser, credentials)
-          .then(() => {
-            deleteUser(currentUser)
-              .then(() => {
-                userDAO.supprimer(currentUser.uid).then(() => {
-                  setConfirmLoading(false);
-                  showMessageAndRedirect(
-                    "success",
-                    "Compte supprimé",
-                    0.1,
-                    "/"
-                  );
-                });
-              })
-              .catch((error) => {
-                showError("Erreur : " + error.code + " - " + error.message);
-                setConfirmLoading(false);
-              });
-          })
-          .catch((error) => {
-            setConfirmLoading(false);
-            if (error.code === "auth/missing-password")
-              showError("Mot de passe actuel manquant");
-            else if (error.code === "auth/invalid-credential") {
-              showError("Mot de passe incorrect");
-            } else if (error.code === "auth/too-many-requests") {
-              showError(
-                "Trop de tentatives à la suite, veuillez réessayer plus tard"
-              );
-            } else {
-              showError("Erreur : " + error.code);
-            }
-          });
+        return;
+      }
+
+      const credentials = EmailAuthProvider.credential(currentUser.email, psw);
+
+      try {
+        await reauthenticateWithCredential(currentUser, credentials);
+
+        await candidatureDAO.deleteCandidaturesByUserId(currentUser.uid);
+
+        await userDAO.supprimer(currentUser.uid);
+
+        await deleteUser(currentUser);
+
+        setConfirmLoading(false);
+        showMessageAndRedirect("success", "Compte supprimé", "", 0.1, "/");
+      } catch (error: any) {
+        setConfirmLoading(false);
+        if (error.code === "auth/missing-password") {
+          showError("Mot de passe actuel manquant");
+        } else if (error.code === "auth/invalid-credential") {
+          showError("Mot de passe incorrect");
+        } else if (error.code === "auth/too-many-requests") {
+          showError(
+            "Trop de tentatives à la suite, veuillez réessayer plus tard"
+          );
+        } else {
+          showError("Erreur : " + error.code + " - " + error.message);
+        }
       }
     }
   };
+
   const [confirmPsw, setConfirmPsw] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const candidatureDAO = new CandidatureDAO();
-  const posteDAO = new PosteDAO();
   const [dataCandidatures, setDataCandidature] = useState<Data[]>([]);
 
   interface Data {
     id_user: string;
-    id_poste: string;
     dateCandidature: string;
-    libelle: string;
+    libellePoste: string;
   }
 
   useEffect(() => {
@@ -349,19 +347,19 @@ function MonCompte() {
         const candidatures = await candidatureDAO.getCandidaturesByUserId(
           currentUser.uid
         );
-        const candidaturesWithLibelle = await Promise.all(
-          candidatures.map(async (candidature) => {
-            const poste = await posteDAO.getById(candidature.id_poste);
-            const libelle = poste.libelle;
-            return {
-              id_user: candidature.id_user,
-              id_poste: candidature.id_poste,
-              dateCandidature: candidature.dateCandidature,
-              libelle: libelle,
-            };
-          })
-        );
-        setDataCandidature(candidaturesWithLibelle);
+
+        if (candidatures.length > 0) {
+          const candidaturesWithLibelle = await Promise.all(
+            candidatures.map(async (candidature) => {
+              return {
+                id_user: candidature.id_user,
+                libellePoste: candidature.libellePoste,
+                dateCandidature: candidature.dateCandidature,
+              };
+            })
+          );
+          setDataCandidature(candidaturesWithLibelle);
+        }
       }
     };
     fetchCandidatures();
@@ -370,33 +368,14 @@ function MonCompte() {
   if (currentUser && currentUser.email)
     return (
       <>
+        <Helmet>
+          <title>Mon compte</title>
+        </Helmet>
+
         <NavBar />
         {contextHolder}
 
         <div className="container_moncompte">
-          <div className="mes_candidatures">
-            <div className="titre_mesinfos">Mes candidatures</div>
-            <div className="titre_container_mescandidatures">
-              <div className="colonne">Titre</div>
-              <div className="colonne">Date de postulation</div>
-              <div className="colonne">Lien</div>
-            </div>
-            {dataCandidatures.map(({ dateCandidature, id_poste, libelle }) => (
-              <div className="container_mescandidatures">
-                <div className="colonne_cand">{libelle}</div>
-                <div className="colonne_cand">{dateCandidature}</div>
-                <div className="colonne_cand">
-                  <Link
-                    className="link_mescandidatures"
-                    to={`/recrutement/${id_poste}`}
-                  >
-                    Voir le poste
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-
           <div className="mes_infos">
             <div className="titre_mesinfos">Mes informations</div>
             <div className="champs">
@@ -599,6 +578,25 @@ function MonCompte() {
                 />
               </Modal>
             </div>
+          </div>
+          <div className="mes_candidatures">
+            <div className="titre_mesinfos">Mes candidatures</div>
+            <div className="titre_container_mescandidatures">
+              <div className="colonne">Libellé du poste</div>
+              <div className="colonne">Date de postulation</div>
+            </div>
+            {dataCandidatures.length > 0 ? (
+              dataCandidatures.map(
+                ({ dateCandidature, libellePoste }, index) => (
+                  <div key={index} className="container_mescandidatures">
+                    <div className="colonne_cand">{libellePoste}</div>
+                    <div className="colonne_cand">{dateCandidature}</div>
+                  </div>
+                )
+              )
+            ) : (
+              <div>Vous avez postulé à aucune offre</div>
+            )}
           </div>
         </div>
         <Footer />

@@ -30,6 +30,9 @@
         margin: 15px;
         display: block;
       }
+      .container_message {
+        color: rgba(255, 0, 0, 0.753);
+      }
       .container_cvInput,
       .container_lettreInput,
       .container_message {
@@ -115,6 +118,16 @@
       .lettre {
         display: none;
       }
+      .politique_conf {
+        margin-top: 30px;
+        .politique {
+          font-family: "Poppins", sans-serif;
+        }
+      }
+
+      .needConnexion {
+        margin-bottom: 30px;
+      }
     }
   }
 }
@@ -135,6 +148,56 @@
         margin-left: 0;
         text-align: justify;
         line-height: 2;
+        white-space: pre-wrap;
+      }
+      .postuler {
+        display: flex;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-direction: column;
+        .container_cvInput,
+        .container_lettreInput,
+        .container_message {
+          margin: 15px;
+          display: block;
+          .bouton_postuler {
+            font-size: 1.1rem;
+            padding: 8px;
+            height: 45px;
+          }
+          textarea {
+            font-size: 1.1rem;
+          }
+
+          .titre_postulation {
+            font-size: 1.3rem;
+          }
+          .labelCv,
+          .labelLettre {
+            padding: 5px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .container_uneCandidature {
+    .info_uneCandidature {
+      width: 90%;
+      .libelle {
+        font-size: 2.2rem;
+      }
+      .titre {
+        font-size: 1.7rem;
+        margin: 30px 0;
+      }
+      .contenu {
+        font-size: 1rem;
+        margin-left: 0;
+        text-align: justify;
+        line-height: 1.8;
         white-space: pre-wrap;
       }
       .postuler {

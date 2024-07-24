@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { PosteDAO } from "../../modele/DAO/PosteDAO";
-import "../../style/Recrutement.scss";
+import { PosteDAO } from "../../../modele/DAO/PosteDAO";
+import "../../../style/Recrutement.scss";
 import { useNavigate } from "react-router-dom";
-import { Poste } from "../../modele/class/Poste";
-import NavBar from "./NavBar";
-import Footer from "./Footer";
+import { Poste } from "../../../modele/class/Poste";
+import NavBar from "../NavBar";
+import Footer from "../Footer";
+import { Helmet } from "react-helmet";
 
 function Recrutement() {
   const posteDAO = new PosteDAO();
@@ -21,15 +22,26 @@ function Recrutement() {
 
   return (
     <>
+      <Helmet>
+        <title>Recrutement</title>
+        <meta
+          name="keywords"
+          content="da soler, recrutement, dsl, divers services logistiques, astre, logistique, transport"
+        />
+      </Helmet>
+
       <NavBar />
       <div>
         <div className="container">
+          <div className="container_article">
+            <h2>Recrutement</h2>
+          </div>
           <div className="nb_poste">
-            Nous avons actuellement
-            {annonce.length > 1
-              ? ` ${annonce.length} postes `
-              : ` ${annonce.length} poste `}
-            à pourvoir
+            {annonce.length === 0
+              ? "Nous n'avons pas de postes à pourvoir en ce moment."
+              : annonce.length === 1
+              ? "Nous avons actuellement 1 poste à pourvoir."
+              : `Nous avons actuellement ${annonce.length} postes à pourvoir.`}
           </div>
           {annonce.map(({ id_poste, libelle, type, lieu }) => (
             <div key={id_poste} className="ligne">

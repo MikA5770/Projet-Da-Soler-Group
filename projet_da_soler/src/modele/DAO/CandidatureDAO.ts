@@ -1,13 +1,17 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   Firestore,
   getDoc,
   getDocs,
+  query,
+  where,
 } from "firebase/firestore";
 import { Connexion } from "../../modele/DAO/Connexion";
 import {
+  deleteObject,
   FirebaseStorage,
   getDownloadURL,
   getMetadata,
@@ -60,7 +64,7 @@ export class CandidatureDAO {
 
   async add(candidature: Candidature): Promise<string> {
     const candidatureData = {
-      id_poste: candidature.id_poste,
+      libellePoste: candidature.libellePoste,
       id_user: candidature.id_user,
       dateCandidature: new Date().toLocaleDateString().split("/").join("-"),
     };
@@ -107,15 +111,15 @@ export class CandidatureDAO {
 
   async getCandidaturesByUserId(uid: string): Promise<Candidature[]> {
     try {
-      const querySnapshot = await getDocs(collection(this.db, this.collection));
+      const candidaturesRef = collection(this.db, this.collection);
+      const q = query(candidaturesRef, where("id_user", "==", uid));
+      const querySnapshot = await getDocs(q);
       const postes: Candidature[] = [];
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        if (data.id_user === uid) {
-          const id_cand = doc.id;
-          postes.push({ id_cand, ...data } as Candidature);
-        }
+        const id_cand = doc.id;
+        postes.push({ id_cand, ...data } as Candidature);
       });
 
       return postes;
@@ -126,13 +130,81 @@ export class CandidatureDAO {
     }
   }
 
+  async supp(candId: string): Promise<void> {
+    try {
+      await deleteDoc(doc(this.db, this.collection, candId));
+
+      const storageRef = ref(this.storage, `candidature/${candId}`);
+
+      const listResults = await listAll(storageRef);
+      const deletePromises = listResults.items.map((item) =>
+        deleteObject(item)
+      );
+
+      await Promise.all(deletePromises);
+    } catch (error) {
+      console.error(
+        "Erreur lors de la suppression des fichiers ou du document:",
+        error
+      );
+    }
+  }
+
+  async getAllLibPoste(): Promise<string[]> {
+    try {
+      const libPoste: string[] = [];
+      const ref = collection(this.db, this.collection);
+
+      const querySnapshot = await getDocs(ref);
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        if (data.libellePoste) {
+          libPoste.push(data.libellePoste);
+        }
+      });
+
+      return libPoste;
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des libellés de poste:",
+        error
+      );
+      throw new Error("Erreur lors de la récupération des libellés de poste");
+    }
+  }
+  async deleteCandidaturesByUserId(uid: string): Promise<void> {
+    try {
+      const candidaturesRef = collection(this.db, this.collection);
+      const q = query(candidaturesRef, where("id_user", "==", uid));
+      const querySnapshot = await getDocs(q);
+
+      for (const doc of querySnapshot.docs) {
+        await deleteDoc(doc.ref);
+
+        const storageRef = ref(this.storage, `candidature/${doc.id}`);
+        const listResults = await listAll(storageRef);
+        const deletePromises = listResults.items.map((item) =>
+          deleteObject(item)
+        );
+        await Promise.all(deletePromises);
+      }
+    } catch (error: any) {
+      console.error(
+        `Erreur lors de la suppression des candidatures pour ${uid} : ${error.message}`
+      );
+      throw new Error(
+        `Erreur lors de la suppression des candidatures pour ${uid} : ${error.message}`
+      );
+    }
+  }
+
   async getFichiersByIdCandidature(id_cand: string) {
     const listRef = ref(this.storage, `${this.ref}/${id_cand}`);
 
     try {
       const res = await listAll(listRef);
       const fichierPromises = res.items.map(async (itemRef) => {
-        console.log(itemRef)
         const objRef = ref(this.storage, itemRef.fullPath);
         const metadata = await getMetadata(objRef);
 

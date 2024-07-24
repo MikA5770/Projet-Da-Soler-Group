@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { ActualiteDAO } from "../../modele/DAO/ActualiteDAO";
-import { Actualite } from "../../modele/class/Actualite";
+import { ActualiteDAO } from "../../../modele/DAO/ActualiteDAO";
+import { Actualite } from "../../../modele/class/Actualite";
 import {
   Button,
   Empty,
@@ -9,6 +9,7 @@ import {
   message,
   Modal,
   Space,
+  Spin,
   Table,
   TableColumnType,
   TableProps,
@@ -29,6 +30,7 @@ function AdminActualite() {
   const actuDAO = new ActualiteDAO();
 
   const [article, setArticle] = useState<Actualite[]>([]);
+  const [loading, setLoading] = useState(true);
   const nav = useNavigate();
 
   const refreshDelete = (id: React.Key) => {
@@ -40,6 +42,7 @@ function AdminActualite() {
     const getActus = async () => {
       const articles = await actuDAO.getAll();
       setArticle(articles);
+      setLoading(false);
     };
 
     getActus();
@@ -187,10 +190,7 @@ function AdminActualite() {
       key: "action",
       render: (_, record) => (
         <div>
-          <Space
-            size="middle"
-            style={{ fontSize: "1.3rem", cursor: "pointer" }}
-          >
+          <Space size="middle" style={{ fontSize: "1.5rem" }}>
             <a>
               <InfoCircleOutlined
                 onClick={() => nav(`/actualite/${record.id_actu}`)}
@@ -241,12 +241,21 @@ function AdminActualite() {
   const suppActualite = async (id: string) => {
     try {
       await actuDAO.supprimer(id);
-      success("Actualite supprimé avec succès !");
+      success("Actualité supprimé");
       refreshDelete(id);
     } catch (error) {
       console.error("Erreur lors de la suppression de l'article :", error);
     }
   };
+  if (loading) {
+    return (
+      <div className="loading">
+        <Spin tip="Chargement" size="large">
+          <div></div>
+        </Spin>
+      </div>
+    );
+  }
 
   return (
     <>

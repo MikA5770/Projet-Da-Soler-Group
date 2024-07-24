@@ -22,16 +22,37 @@
 
 @media screen and (max-width: 992px) {
   .container_administration {
-      .container_menu_admin {
-    .menu_admin {
-      padding-top: 130px;
-    }}
+    .container_menu_admin {
+      .menu_admin {
+        padding-top: 130px;
+      }
+    }
 
-    .ant-menu-item-group-title{
+    .ant-menu-item-group-title {
       display: none;
     }
     .container_administration_tableau {
       padding: 15px 15px 0;
     }
   }
+}
+@media screen and (max-width: 420px) {
+  .container_administration {
+    .container_menu_admin {
+      .menu_admin {
+        padding-top: 130px;
+      }
+    }
+
+    .ant-menu-item-group-title {
+      display: none;
+    }
+    .container_administration_tableau {
+      padding: 15px 0 0 5px;
+    }
+  }
+}
+
+.loading {
+  margin-top: 50px;
 }

@@ -47,11 +47,9 @@ export class PosteDAO {
         const id_poste = docSnap.id;
         return { id_poste, ...docSnap.data() } as Poste;
       } else {
-        // Le document n'existe pas, générer une erreur
         throw new Error("Document not found");
       }
     } catch (error) {
-      // Gérer les erreurs d'accès à Firestore
       console.log("Error fetching document:", error);
       throw error;
     }

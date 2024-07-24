@@ -4,7 +4,6 @@
   align-items: center;
   flex-direction: column;
   .mes_candidatures {
-    margin-top: 50px;
     .titre_container_mescandidatures {
       display: flex;
       justify-content: space-around;
@@ -56,6 +55,9 @@
       caret-color: #ff5722;
       border-bottom: #ff5722 2px solid;
     }
+  }
+  .mes_infos {
+    margin-top: 50px;
   }
   .mes_infos,
   .mes_candidatures,
@@ -119,7 +121,6 @@
     align-items: center;
     flex-direction: column;
     .mes_candidatures {
-      margin-top: 50px;
       .titre_container_mescandidatures {
         display: flex;
         justify-content: space-around;
@@ -212,8 +213,8 @@
         .container_bouton_modifier {
           height: 30px;
         }
-        .ant-switch-inner{
-          width:100px;
+        .ant-switch-inner {
+          width: 100px;
         }
       }
     }

@@ -92,6 +92,12 @@ export class UtilisateurDAO {
       estAdmin: true,
     });
   }
+  async removeAdmin(id: string) {
+    const ref = doc(this.db, this.collection, id);
+    await updateDoc(ref, {
+      estAdmin: false,
+    });
+  }
 
   async modifierEmail(id: string, email: string) {
     const ref = doc(this.db, this.collection, id);
@@ -101,7 +107,8 @@ export class UtilisateurDAO {
     });
   }
 
-  async checkEmailExists(email: string): Promise<boolean> {
+async checkEmailExists(email: string): Promise<boolean> {
+  try {
     const query = await getDocs(collection(this.db, this.collection));
     for (const doc of query.docs) {
       if (doc.data().email === email) {
@@ -109,7 +116,12 @@ export class UtilisateurDAO {
       }
     }
     return false;
+  } catch (error) {
+    console.error("Error checking email existence: ", error);
+    return false;
   }
+}
+
   public async estAdmin(idPersonne: string): Promise<boolean> {
     try {
       const docRef = doc(this.db, this.collection, idPersonne);
@@ -117,15 +129,15 @@ export class UtilisateurDAO {
 
       if (docSnap.exists()) {
         const data = docSnap.data();
-        // Vérifiez si la propriété estAdministrateur existe dans le document
+       
         if (data && data.estAdmin !== undefined) {
           return data.estAdmin;
         } else {
-          // Si la propriété estAdministrateur n'existe pas ou est undefined, retournez false
+         
           return false;
         }
       } else {
-        // Si le document n'existe pas, retournez false
+       
         return false;
       }
     } catch (error) {

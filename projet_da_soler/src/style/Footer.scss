@@ -100,15 +100,35 @@ $dark_b: #1b262a;
     .infos {
       padding: 2vh 0 4vh 0;
       width: auto;
-      display: flex;
-      justify-content: center;
       .position {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         span {
           vertical-align: middle;
           margin-left: 5px;
         }
         img {
           vertical-align: middle;
+        }
+      }
+      .mentions_politique {
+        margin-right: 10px;
+        font-family: Poppins;
+        font-size: small;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        font-size: 0.75rem;
+        a {
+          color: gray;
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+        span {
+          color: gray;
         }
       }
     }
@@ -120,6 +140,13 @@ $dark_b: #1b262a;
     .milieu {
       ul {
         font-size: 1rem;
+      }
+    }
+    .bas {
+      .infos {
+        .mentions_politique {
+        justify-content: center;
+        }
       }
     }
   }

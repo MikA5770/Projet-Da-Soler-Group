@@ -1,0 +1,22 @@
+.politique_titre {
+  font-size: 1.7rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.politique_texte {
+  font-size: 1.2rem;
+  width: 60%;
+  margin: 20px auto;
+  line-height: 1.8;
+  a {
+    text-decoration: none;
+    color: black;
+  }
+}
+.politique_soustitre {
+  width: 60%;
+  font-size: 1.8rem;
+  margin: 30px auto;
+}

@@ -3,6 +3,7 @@
   height: 100%;
   display: flex;
   justify-content: center;
+  margin: 50px 0;
   .container_form {
     background-color: white;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -37,6 +38,7 @@
     .button_inscription {
       display: flex;
       justify-content: center;
+      margin-bottom: 20px;
       button {
         display: flex;
         align-items: center;
@@ -62,8 +64,23 @@
         box-shadow: none;
       }
     }
-    .error_inscription {
+    .check{
+      font-size: 1rem;
+    }
+    .error_inscription{
       margin: 20px;
+      color: rgba(255, 0, 0, 0.848);
     }
   }
+}
+@media screen and (max-width: 500px) {
+
+.container_inscription {
+  .container_form {
+    width: 75vw;
+    .button_inscription{
+      font-size: 1.2rem;
+    }
+  }
+}
 }

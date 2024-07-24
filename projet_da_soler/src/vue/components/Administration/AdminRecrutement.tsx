@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { PosteDAO } from "../../modele/DAO/PosteDAO";
-import { Poste } from "../../modele/class/Poste";
+import { PosteDAO } from "../../../modele/DAO/PosteDAO";
+import { Poste } from "../../../modele/class/Poste";
 import {
   Button,
   Empty,
   Input,
   InputRef,
-  message,
   Modal,
   Space,
+  Spin,
   Table,
   TableColumnType,
   TableProps,
@@ -24,11 +24,13 @@ import {
 import { FilterDropdownProps } from "antd/es/table/interface";
 import Highlighter from "react-highlight-words";
 import TextArea from "antd/es/input/TextArea";
+import { useCustomNav } from "../../../utils/useCustomNav";
 
 function AdminRecrutement() {
   const posteDAO = new PosteDAO();
 
   const [annonce, setAnnonce] = useState<Poste[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const refreshDelete = (id: React.Key) => {
     const newData = annonce.filter((item: any) => item.id_poste !== id);
@@ -54,6 +56,7 @@ function AdminRecrutement() {
     const getPoste = async () => {
       const postes = await posteDAO.getAll();
       setAnnonce(postes);
+      setLoading(false);
     };
 
     getPoste();
@@ -171,14 +174,7 @@ function AdminRecrutement() {
       ),
   });
 
-  const [messageApi, contextHolder] = message.useMessage();
-
-  const success = (content: string) => {
-    messageApi.open({
-      type: "success",
-      content: content,
-    });
-  };
+  const { showSuccess, contextHolder } = useCustomNav();
 
   const info = (id_poste: string) => {
     const posteSelected = annonce.find((poste) => poste.id_poste === id_poste);
@@ -304,10 +300,7 @@ function AdminRecrutement() {
       key: "action",
       render: (_, record) => (
         <div>
-          <Space
-            size="middle"
-            style={{ fontSize: "1.3rem", cursor: "pointer" }}
-          >
+          <Space size="middle" style={{ fontSize: "1.5rem" }}>
             <a>
               <InfoCircleOutlined onClick={() => info(record.id_poste)} />
             </a>
@@ -356,7 +349,7 @@ function AdminRecrutement() {
       poste.datePublication = new Date().toLocaleDateString();
       const id = await posteDAO.add(poste);
       poste.id_poste = id;
-      success("Poste ajouté avec succès !");
+      showSuccess("Poste ajouté avec succès !");
       refreshAdd(poste);
     } catch (error) {
       console.error("Erreur lors de l'ajout du poste:", error);
@@ -517,7 +510,7 @@ function AdminRecrutement() {
       poste.competences = competences;
       poste.datePublication = datePublication;
       await posteDAO.modifier(id_poste, poste);
-      success("Poste modifié avec succès !");
+      showSuccess("Poste modifié avec succès !");
 
       refreshEdit(poste);
     } catch (e: any) {
@@ -539,13 +532,23 @@ function AdminRecrutement() {
   const suppPoste = async (id: string) => {
     try {
       await posteDAO.supprimer(id);
-      success("Poste supprimé avec succès !");
+      showSuccess("Poste supprimé avec succès !");
 
       refreshDelete(id);
     } catch (error) {
       console.error("Erreur lors de la suppression du poste:", error);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="loading">
+        <Spin tip="Chargement" size="large">
+          <div></div>
+        </Spin>
+      </div>
+    );
+  }
 
   return (
     <>

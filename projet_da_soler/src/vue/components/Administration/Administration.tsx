@@ -1,8 +1,8 @@
 import type { MenuProps } from "antd";
-import "../../style/Administration.scss";
+import "../../../style/Administration.scss";
 import { Button, Menu } from "antd";
-import Footer from "./Footer";
-import NavBar from "./NavBar";
+import Footer from "../Footer";
+import NavBar from "../NavBar";
 import {
   FileTextOutlined,
   MenuFoldOutlined,
@@ -16,13 +16,15 @@ import { AdminUtilisateur } from "./AdminUtilisateur";
 import AdminRecrutement from "./AdminRecrutement";
 import AdminCandidature from "./AdminCandidature";
 import AdministrationActualite from "./AdminActualite";
+import { Helmet } from "react-helmet";
+import { useAuth } from "../AuthContext";
 
 const Administration = () => {
   type MenuItem = Required<MenuProps>["items"][number];
 
   const [collapsed, setCollapsed] = useState(false);
   const [currentMenu, setCurrentMenu] = useState("1");
-
+  const { currentUser, admin } = useAuth();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -80,28 +82,32 @@ const Administration = () => {
         return null;
     }
   };
+  if (currentUser && admin)
+    return (
+      <>
+        <Helmet>
+          <title>Administration</title>
+        </Helmet>
 
-  return (
-    <>
-      <NavBar />
-      <div className="container_administration">
-        <div className="container_menu_admin">
-          <Menu
-            className="menu_admin"
-            onClick={getMenu}
-            defaultSelectedKeys={["1"]}
-            mode="inline"
-            inlineCollapsed={windowWidth >= 992 ? collapsed : true}
-            items={items}
-          />
+        <NavBar />
+        <div className="container_administration">
+          <div className="container_menu_admin">
+            <Menu
+              className="menu_admin"
+              onClick={getMenu}
+              defaultSelectedKeys={["1"]}
+              mode="inline"
+              inlineCollapsed={windowWidth >= 992 ? collapsed : true}
+              items={items}
+            />
+          </div>
+          <div className="container_administration_tableau">
+            {affichageContenu()}
+          </div>
         </div>
-        <div className="container_administration_tableau">
-          {affichageContenu()}
-        </div>
-      </div>
-      <Footer />
-    </>
-  );
+        <Footer />
+      </>
+    );
 };
 
 export default Administration;

@@ -1,58 +1,46 @@
 import { useState, useRef, useEffect } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { Actualite } from "../../modele/class/Actualite";
-import { ActualiteDAO } from "../../modele/DAO/ActualiteDAO";
-import { Button, Input, message, Upload, UploadProps } from "antd";
-import "../../style/AjoutActu.scss";
 import Quill from "quill";
+import "quill/dist/quill.snow.css";
+import { Actualite } from "../../../modele/class/Actualite";
+import { ActualiteDAO } from "../../../modele/DAO/ActualiteDAO";
+import { Button, Input, Upload, UploadProps } from "antd";
+import "../../../style/AjoutModifActu.scss";
 import ImageCompress from "quill-image-compress";
 import { UploadOutlined } from "@ant-design/icons";
-import NavBar from "./NavBar";
-import Footer from "./Footer";
-import { useParams } from "react-router-dom";
+import NavBar from "../NavBar";
+import Footer from "../Footer";
+import { useCustomNav } from "../../../utils/useCustomNav";
+import { Helmet } from "react-helmet";
+import { useAuth } from "../AuthContext";
 
-const ModifActu = () => {
-  <NavBar />;
+Quill.register("modules/imageCompress", ImageCompress);
 
+const AjoutActu = () => {
   const [titre, setTitre] = useState("");
   const [resume, setResume] = useState("");
   const [contenu, setContent] = useState("");
-  const [article, setArticle] = useState<Actualite>();
+  const { currentUser, admin } = useAuth();
 
-  const { id_actu } = useParams();
+  let tabError: string[] = [];
   const actuDAO = new ActualiteDAO();
   const editorRef = useRef<HTMLDivElement>(null);
-  // const [error, setError] = useState(false);
-  // const [errorSize, setErrorSize] = useState(false);
-  // const [errorType, setErrorType] = useState(false);
+  const { showSuccess, showError, showErrorArticle, contextHolder } =
+    useCustomNav();
 
   useEffect(() => {
-    const getArticle = async () => {
-      if (id_actu) {
-        const actu = await actuDAO.getById(id_actu);
-        setArticle(actu);
-      }
-    };
-
-    getArticle();
-
     if (editorRef.current) {
-      Quill.register("modules/imageCompress", ImageCompress);
-
       const quill = new Quill(editorRef.current, {
         modules: {
           toolbar: [
+            [{ size: ["small", false, "large", "huge"] }],
             ["bold", "italic", "underline", "strike"],
+            ["image"],
             ["blockquote"],
             ["link"],
-            ["image", "video"],
             [{ header: 1 }, { header: 2 }],
             [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
             [{ script: "sub" }, { script: "super" }],
             [{ indent: "-1" }, { indent: "+1" }],
-            [{ direction: "rtl" }],
-            [{ size: ["small", false, "large", "huge"] }],
             [{ header: [1, 2, 3, 4, 5, 6, false] }],
             [{ color: [] }, { background: [] }],
             [{ align: [] }],
@@ -61,7 +49,7 @@ const ModifActu = () => {
           imageCompress: {
             quality: 0.8,
             maxWidth: 600,
-            imageType: "image/png" || "image/jpeg",
+            imageType: "image/jpeg" || "image/png",
             debug: true,
             suppressErrorLogging: false,
             insertIntoEditor: undefined,
@@ -69,7 +57,6 @@ const ModifActu = () => {
         },
         theme: "snow",
       });
-
       quill.on("text-change", () => {
         setContent(editorRef.current!.children[0].innerHTML);
       });
@@ -87,30 +74,59 @@ const ModifActu = () => {
       const isPNG = file.type === "image/png";
       const isJPG = file.type === "image/jpeg";
       if (!isPNG && !isJPG) {
-        // setErrorType(true);
-        message.error(`${file.name} n'est pas de type png / jpg`);
+        showError(`${file.name} n'est pas de type png / jpg`, 3);
         return true;
       }
       if (file.size / 1024 > 4000) {
-        // setErrorSize(true);
-        message.error(`${file.name} dépasse la taille limite de 4MB.`);
+        showError(`${file.name} dépasse la taille limite de 4MB.`, 3);
         return true;
       }
-      // setErrorType(false);
-      // setErrorSize(false);
       setCover(file);
       return false;
     },
     onChange(info) {
       if (info.file.status === "error") {
-        message.error(`Erreur d'ajout du fichier ${info.file.name}.`);
+        info.file.error.message = "Erreur lors du téléchargement";
       }
     },
   };
 
+  const isValidTitre = (): boolean => {
+    if (!titre) {
+      tabError.push("titre");
+      return false;
+    }
+    return true;
+  };
+  const isValidResume = (): boolean => {
+    if (!resume) {
+      tabError.push("résumé");
+      return false;
+    }
+    return true;
+  };
+  const isValidContenu = (): boolean => {
+    if (!contenu) {
+      tabError.push("contenu");
+      return false;
+    }
+    return true;
+  };
   async function handleAdd() {
-    const actu = new Actualite();
+    tabError = [];
 
+    isValidTitre();
+    isValidResume();
+    isValidContenu();
+    if (tabError.length > 0) {
+      showErrorArticle(tabError);
+      return;
+    } else if (cover === null) {
+      showError("Veuillez insérer une image de présentation valide");
+      return;
+    }
+
+    const actu = new Actualite();
     actu.titre = titre;
     actu.resume = resume;
     actu.contenu = contenu;
@@ -119,7 +135,7 @@ const ModifActu = () => {
       try {
         const docId = await actuDAO.add(actu);
         await actuDAO.addInStorage(cover, docId);
-        alert("Article ajouté");
+        showSuccess("Article ajouté");
       } catch (error) {
         console.error(
           "Erreur lors de l'ajout de l'actualité et du fichier :",
@@ -127,24 +143,36 @@ const ModifActu = () => {
         );
       }
   }
-  if (article)
+  const handleScroll = (e: any) => {
+    e.stopPropagation();
+  };
+  if (currentUser && admin)
     return (
       <>
+        <Helmet>
+          <title>Ajouter une actualité</title>
+          <meta
+            name="keywords"
+            content="da soler, dsl, divers services logistiques, astre, logistique, transport"
+          />
+        </Helmet>
+
         <NavBar />
+        {contextHolder}
         <div className="container_actu">
-          <h2>Modifier un article</h2>
+          <h2>Ajouter un article</h2>
 
           <div className="input_actu">
             <Input
               placeholder="Titre"
-              defaultValue={article.titre}
+              value={titre}
               onChange={(e) => setTitre(e.target.value)}
             />
           </div>
           <div className="input_actu">
             <Input
               placeholder="Résumé"
-              defaultValue={article.resume}
+              value={resume}
               onChange={(e) => setResume(e.target.value)}
             />
           </div>
@@ -155,18 +183,30 @@ const ModifActu = () => {
               </Button>
             </Upload>
           </div>
-          <div className="container_content_actu">
-            <div className="content_actu" ref={editorRef}>
-              <ReactQuill
-                modules={{ toolbar: true }}
-                theme="snow"
-                defaultValue={article.contenu}
-                onChange={setContent}
-              />
+          <div
+            className="container_content_actu"
+            style={{ position: "relative" }}
+          >
+            <div
+              className="content_actu"
+              style={{
+                maxHeight: "600px",
+                overflowY: "auto",
+              }}
+              onWheel={handleScroll}
+            >
+              <div
+                ref={editorRef}
+                style={{
+                  minHeight: "100%",
+                  height: "auto",
+                  paddingTop: "50px",
+                }}
+              ></div>
             </div>
           </div>
           <Button type="primary" onClick={handleAdd}>
-            Modifier l'article
+            Ajouter l'article
           </Button>
         </div>
         <Footer />
@@ -174,4 +214,4 @@ const ModifActu = () => {
     );
 };
 
-export default ModifActu;
+export default AjoutActu;

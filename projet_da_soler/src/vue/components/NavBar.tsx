@@ -1,7 +1,7 @@
 import "../../style/NavBar.scss";
 import { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DaSolerLogo from "../../../public/assets/DA-SOLER-Logo-Blanc-DgCs0BTA.png";
+import DaSolerLogo from "../../../public/assets/DA-SOLER.png";
 import UserPNG from "../../../public/assets/user.png";
 import ArrowPNG from "../../../public/assets/arrow.png";
 import { UtilisateurConnexion } from "../../modele/DAO/UtilisateurConnexion";
@@ -14,14 +14,14 @@ const NavBar = () => {
   const { currentUser, admin, prenom } = useAuth();
   const [open, setOpen] = useState(false);
   const [burgerOpen, setBurgerOpen] = useState(false);
-  // const [burgerClass, setBurgerClass] = useState("burger_menu");
+
   const nav = useNavigate();
   const { t } = useTranslation();
 
   const { i18n } = useTranslation();
   const [en, setEn] = useState(false);
 
-  const changeLanguage = () => {
+  const   changeLanguage = () => {
     const newLang = en ? "fr" : "en";
     i18n.changeLanguage(newLang);
     setEn(!en);
@@ -45,6 +45,7 @@ const NavBar = () => {
   const handleBurger = () => {
     setBurgerOpen(!burgerOpen);
   };
+
   return (
     <div className="navbar">
       <div className="left">
@@ -61,7 +62,9 @@ const NavBar = () => {
         </div>
       </div>
       <div className="right" ref={menuRef}>
-        <div className="bjr">Bonjour {currentUser ? prenom : ""} !</div>
+        <div className="bjr">
+          {t("navbar.bjr")} {currentUser ? prenom : ""} !
+        </div>
 
         <div
           className="pic"
@@ -82,7 +85,7 @@ const NavBar = () => {
           <ul>
             {currentUser ? (
               <li onClick={() => nav("/moncompte")}>
-                {t("navbar.menu.moncompte")}{" "}
+                {t("navbar.menu.moncompte")}
               </li>
             ) : (
               ""
@@ -108,66 +111,69 @@ const NavBar = () => {
         </div>
       </div>
       {!burgerOpen ? (
-        <div className="burger_menu_icon" onClick={() => handleBurger()}>
+        <div className="burger_menu_icon" onClick={handleBurger}>
           <MenuOutlined style={{ color: "white", fontSize: "40px" }} />
         </div>
       ) : (
         ""
       )}
-      {burgerOpen ? (
-        <div>
-          <div
-            className="close_icon"
-            onClick={() => setBurgerOpen(!burgerOpen)}
-          >
-            <CloseOutlined />
-          </div>
-          <div className="links_burger_menu">
-            <div className="test" onClick={() => nav("/quisommesnous")}>
-              {t("navbar.qsn")}
+      <div className={`burger_menu ${burgerOpen ? "open" : ""}`}>
+        {burgerOpen ? (
+          <>
+            <div className="close_icon" onClick={() => setBurgerOpen(false)}>
+              <CloseOutlined />
             </div>
-            <div className="test" onClick={() => nav("/actualite")}>
-              {t("navbar.actualite")}
+            <div className="links_burger_menu">
+              {currentUser ? (
+                <div
+                  className="liens_burger"
+                  onClick={() => utilisateur.deconnexion()}
+                >
+                  {t("navbar.menu.deconnexion")}
+                </div>
+              ) : (
+                <div className="liens_burger" onClick={() => nav("/connexion")}>
+                  {t("navbar.menu.connexion")}
+                </div>
+              )}
+              <div
+                className="liens_burger"
+                onClick={() => nav("/quisommesnous")}
+              >
+                {t("navbar.qsn")}
+              </div>
+              <div className="liens_burger" onClick={() => nav("/recrutement")}>
+                {t("navbar.recrutement")}
+              </div>
+              <div className="liens_burger" onClick={() => nav("/actualite")}>
+                {t("navbar.actualite")}
+              </div>
+              {currentUser && (
+                <div className="liens_burger" onClick={() => nav("/moncompte")}>
+                  {t("navbar.menu.moncompte")}
+                </div>
+              )}
+              {currentUser && admin && (
+                <div
+                  className="liens_burger"
+                  onClick={() => nav("/administration")}
+                >
+                  {t("navbar.menu.administration")}
+                </div>
+              )}
+              <div
+                className="liens_burger"
+                onClick={changeLanguage}
+                style={{ cursor: "pointer" }}
+              >
+                {en ? "FR" : "EN"}
+              </div>
             </div>
-            <div className="test" onClick={() => nav("/recrutement")}>
-              {t("navbar.recrutement")}
-            </div>
-            <div
-              className="test"
-              onClick={changeLanguage}
-              style={{ cursor: "pointer" }}
-            >
-              {en ? "FR" : "EN"}
-            </div>
-            {currentUser ? (
-              <div className="test" onClick={() => utilisateur.deconnexion()}>
-                {t("navbar.menu.deconnexion")}
-              </div>
-            ) : (
-              <div className="test" onClick={() => nav("/connexion")}>
-                {t("navbar.menu.connexion")}
-              </div>
-            )}
-
-            {currentUser ? (
-              <div className="test" onClick={() => nav("/moncompte")}>
-                {t("navbar.menu.moncompte")}
-              </div>
-            ) : (
-              ""
-            )}
-            {currentUser && admin ? (
-              <div className="test" onClick={() => nav("/administration")}>
-                {t("navbar.menu.administration")}
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
+          </>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 };
